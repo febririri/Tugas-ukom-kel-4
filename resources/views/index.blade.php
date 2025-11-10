@@ -59,7 +59,6 @@
     </div>
   </section>
 
-  <!-- Mengapa SistemPoin -->
   <section id="tentang" class="py-20 px-10 text-center">
     <h2 class="text-3xl font-extrabold mb-4">Mengapa SistemPoin?</h2>
     <p class="text-gray-600 mb-10">
