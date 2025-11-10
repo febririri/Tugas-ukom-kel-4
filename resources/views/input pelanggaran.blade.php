@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Input Pelanggaran Siswa</title>
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -66,21 +65,17 @@
 <body>
 
   <div class="container py-5">
-    <!-- Header -->
     <h1 class="mb-2">Input Pelanggaran Siswa</h1>
     <p class="mb-4">Cari siswa, pilih jenis pelanggaran, dan upload bukti</p>
 
-    <!-- Form Input Pelanggaran -->
     <form action="#" method="POST" enctype="multipart/form-data">
 
-      <!-- Cari dan Pilih Siswa -->
       <div class="card shadow-sm p-4 mb-4">
         <h5 class="fw-semibold mb-3"><i class="bi bi-search"></i> Cari dan Pilih Siswa</h5>
         <label class="form-label fw-semibold">Cari Siswa (Nama atau NIS)</label>
         <input type="text" class="form-control" placeholder="Ketik nama atau NIS siswa..." required>
       </div>
 
-      <!-- Detail Pelanggaran -->
       <div class="card shadow-sm p-4 mb-4">
         <h5 class="fw-semibold mb-3">Detail Pelanggaran</h5>
 
