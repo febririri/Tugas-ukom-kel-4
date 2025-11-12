@@ -134,7 +134,7 @@
     <a href="#" class="nav-link active">Dashboard</a>
     <a href="{{ route('input.pelanggaran') }}" class="nav-link">Input Pelanggaran</a>
     <a href="#" class="nav-link">Sanksi Pelanggaran</a>
-    <a href="#" class="nav-link">Penghargaan</a>
+    <a href="{{ route('input.penghargaan') }}" class="nav-link active">Penghargaan</a>
     <a href="#" class="nav-link">History</a>
   </div>
 
