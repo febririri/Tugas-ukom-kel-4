@@ -7,32 +7,52 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman login
+    // 🔹 Menampilkan halaman login
     public function showLogin()
     {
-        return view('template.login'); // pastikan sesuai nama file blade kamu
+        return view('template.login'); // pastikan file ini ada
     }
 
-    // Proses login
+    // 🔹 Proses login
     public function login(Request $request)
     {
+        // Validasi input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
-        // Cek apakah data cocok dengan database
+        // Cek login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+
+            $user = Auth::user();
+
+            // Arahkan berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('dashboard.admin');
+            } elseif ($user->role === 'guru') {
+                return redirect()->route('dashboard.guru');
+            } else {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Role tidak dikenali.']);
+            }
         }
 
-        // Kalau gagal
         return back()->withErrors([
             'email' => 'Email atau password salah!',
         ]);
     }
 
-    // Halaman setelah login
-    public function dashboard()
+    // 🔹 Logout
+    public function logout(Request $request)
     {
-        return view('template.dashboard'); // nanti kita buat file dashboard.blade.php
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }
