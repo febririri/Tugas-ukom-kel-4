@@ -8,3 +8,6 @@ Route::get('/input-pelanggaran', function () {return view('input pelanggaran');}
 Route::get('/penghargaan', function () {
     return view('penghargaan');
 })->name('input.penghargaan');
+Route::get('/sanksi', function () {
+    return view('sanksi');
+})->name('input.sanksi');
