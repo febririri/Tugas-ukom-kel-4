@@ -27,5 +27,20 @@ Route::view('/input-pelanggaran', 'template.input pelanggaran')->name('input.pel
 Route::view('/penghargaan', 'template.penghargaan')->name('penghargaan');
 Route::view('/sanksi', 'template.sanksi')->name('sanksi');
 
+// 🔹 Halaman history (utama)
+Route::get('/history', function () {
+    return view('history');
+})->name('history');
+
+// 🔹 MINI SIDEBAR — History Pelanggaran & Penghargaan
+Route::get('/history/pelanggaran', function () {
+    return view('history_pelanggaran');   // pastikan file: resources/views/history_pelanggaran.blade.php
+})->name('history.pelanggaran');
+
+Route::get('/history/penghargaan', function () {
+    return view('history_penghargaan');  // pastikan file: resources/views/history_penghargaan.blade.php
+})->name('history.penghargaan');
+
 // 🔹 Logout
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
