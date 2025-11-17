@@ -33,6 +33,7 @@ Route::get('/dashboard-guru', fn() => view('template.dashboard_guru'))
 
 Route::get('/penghargaan', fn() => view('template.penghargaan'))->name('penghargaan');
 
+
 /*
 |--------------------------------------------------------------------------
 | KATEGORI PELANGGARAN (JSON)
