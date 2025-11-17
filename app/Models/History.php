@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class History extends Model
+{
+    protected $table = 'history';
+
+    protected $fillable = [
+        'nama_siswa',
+        'kelas',
+        'jurusan',
+        'jenis_pelanggaran',
+        'bentuk_pelanggaran',
+        'poin',
+        'keterangan',
+        'bukti',
+    ];
+}

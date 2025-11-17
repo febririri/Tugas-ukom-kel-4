@@ -107,17 +107,6 @@
       background-color: #2563eb;
     }
 
-    .chart-placeholder {
-      height: 250px;
-      background: linear-gradient(to bottom right, #eaf2ff, #d7e8ff);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #2563eb;
-      font-weight: 500;
-    }
-
     footer {
       text-align: center;
       margin-top: 40px;
@@ -135,7 +124,7 @@
     <a href="{{ route('input.pelanggaran') }}" class="nav-link">Input Pelanggaran</a>
     <a href="sanksi" class="nav-link">Sanksi Pelanggaran</a>
     <a href="{{ route('penghargaan') }}" class="nav-link active">Penghargaan</a>
-    <a href="#" class="nav-link">History</a>
+    <a href="{{ route('history.pelanggaran') }}" class="nav-link">history</a>
   </div>
 
   <div class="main-content">
@@ -203,7 +192,11 @@
       <div class="col-md-6">
         <div class="card p-3">
           <h5>Grafik Pelanggaran per Jurusan</h5>
-          <div class="chart-placeholder">[ Grafik Placeholder ]</div>
+
+          <!-- GRAFIK START -->
+          <canvas id="grafikPelanggaran" height="160"></canvas>
+          <!-- GRAFIK END -->
+
         </div>
       </div>
     </div>
@@ -214,5 +207,41 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- CHART.JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- SCRIPT GRAFIK -->
+  <script>
+    const ctx = document.getElementById('grafikPelanggaran').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'line', // grafik naik turun
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+        datasets: [{
+          label: 'Pelanggaran per Jurusan',
+          data: [30, 45, 28, 60, 40, 70], // contoh data
+          borderWidth: 3,
+          tension: 0.4,     // bikin garis melengkung
+          fill: false,
+          borderColor: '#2563eb',
+          pointBackgroundColor: '#1d4ed8',
+          pointRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
