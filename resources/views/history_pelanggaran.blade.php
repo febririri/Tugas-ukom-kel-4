@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>History Pelanggaran</title>
 
-    <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         body {
-            background: #e9f0ff; /* pastel blue */
+            background: #e9f0ff;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -20,7 +18,6 @@
             padding: 20px;
         }
 
-        /* MINI SIDEBAR */
         .mini-sidebar {
             width: 220px;
             background: #dce6ff;
@@ -38,11 +35,6 @@
             color: #354b72;
             font-weight: 500;
             text-decoration: none;
-            transition: 0.2s;
-        }
-
-        .mini-sidebar a:hover {
-            background: #c8d9ff;
         }
 
         .mini-sidebar a.active {
@@ -51,7 +43,6 @@
             font-weight: 600;
         }
 
-        /* CARD KONTEN */
         .pastel-card {
             background: #f2f6ff;
             padding: 25px;
@@ -63,28 +54,17 @@
             color: #2d4ca8;
             font-weight: 700;
         }
-
-        table thead {
-            background: #d9e4ff;
-        }
-
-        table th {
-            color: #2d4ca8;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
 
-    <!-- SIDEBAR KECIL -->
     <div class="mini-sidebar">
         <a href="{{ route('history.pelanggaran') }}" class="active">History Pelanggaran</a>
         <a href="{{ route('history.penghargaan') }}">History Penghargaan</a>
     </div>
 
-    <!-- KONTEN UTAMA -->
     <div class="content-area" style="flex: 1;">
 
         <div class="pastel-card shadow-sm">
@@ -96,31 +76,27 @@
                     <a href="{{ route('input.pelanggaran') }}" class="btn btn-primary me-2">
                         + Input Pelanggaran
                     </a>
-                    <a href="#" class="btn btn-danger">
-                        Cetak Pelanggaran
-                    </a>
+                    <a href="#" class="btn btn-danger">Cetak Pelanggaran</a>
                 </div>
             </div>
 
-            <!-- TABEL HISTORY -->
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
-                    <thead>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th>Jurusan</th>
+                        <th>Bentuk Pelanggaran</th>
+                        <th>Poin</th>
+                        <th>Tanggal</th>
+                        <th>Bukti</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($data as $item)
                         <tr>
-                            <th>No</th>
-                            <th>Nama Siswa</th>
-                            <th>Kelas</th>
-                            <th>Jurusan</th>
-                            <th>Bentuk Pelanggaran</th>
-                            <th>Poin</th>
-                            <th>Tanggal</th>
-                            <th>Bukti</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($data as $index => $item)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama_siswa }}</td>
                             <td>{{ $item->kelas }}</td>
                             <td>{{ $item->jurusan }}</td>
@@ -129,24 +105,19 @@
                             <td>{{ $item->created_at->format('d-m-Y') }}</td>
                             <td>
                                 @if($item->bukti)
-                                    <a href="{{ asset('storage/bukti/' . $item->bukti) }}" target="_blank" class="btn btn-sm btn-info">
-                                        Lihat Bukti
-                                    </a>
+                                    <a href="{{ asset('storage/bukti/'.$item->bukti) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                 @else
-                                    <span class="text-muted">-</span>
+                                    -
                                 @endif
                             </td>
                         </tr>
-                        @empty
+                    @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted">
-                                Belum ada data pelanggaran
-                            </td>
+                            <td colspan="8" class="text-center text-muted">Belum ada data pelanggaran</td>
                         </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @endforelse
+                </tbody>
+            </table>
 
         </div>
 

@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggaran;
+use App\Models\History;
 use Illuminate\Http\Request;
 
 class PelanggaranController extends Controller
 {
+    // Tampilkan halaman history
     public function index()
     {
-        $data = Pelanggaran::latest()->get();
+        // Ambil data dari tabel history
+        $data = History::latest()->get();
         return view('history_pelanggaran', compact('data'));
     }
 
+    // Form input pelanggaran
     public function create()
     {
-       return view('template.input_pelanggaran');
-
+        return view('template.input_pelanggaran');
     }
 
+    // Simpan pelanggaran + history
     public function store(Request $request)
     {
         $request->validate([
@@ -33,11 +37,13 @@ class PelanggaranController extends Controller
 
         $fileName = null;
 
+        // Upload gambar bukti
         if ($request->hasFile('bukti')) {
             $fileName = time() . '_' . $request->bukti->getClientOriginalName();
             $request->bukti->storeAs('bukti', $fileName, 'public');
         }
 
+        // 🔵 Simpan ke tabel pelanggaran
         Pelanggaran::create([
             'nama_siswa' => $request->nama_siswa,
             'kelas' => $request->kelas,
@@ -49,6 +55,19 @@ class PelanggaranController extends Controller
             'bukti' => $fileName
         ]);
 
-        return redirect()->route('history.pelanggaran')->with('success', 'Pelanggaran berhasil disimpan!');
+        // 🔵 Simpan juga ke tabel history
+        History::create([
+            'nama_siswa' => $request->nama_siswa,
+            'kelas' => $request->kelas,
+            'jurusan' => $request->jurusan,
+            'jenis_pelanggaran' => $request->jenis_pelanggaran,
+            'bentuk_pelanggaran' => $request->bentuk_pelanggaran,
+            'poin' => $request->poin,
+            'keterangan' => $request->keterangan,
+            'bukti' => $fileName
+        ]);
+
+        return redirect()->route('history.pelanggaran')
+            ->with('success', 'Pelanggaran berhasil disimpan!');
     }
 }
