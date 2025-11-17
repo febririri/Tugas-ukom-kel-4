@@ -63,6 +63,15 @@
             color: #2d4ca8;
             font-weight: 700;
         }
+
+        table thead {
+            background: #d9e4ff;
+        }
+
+        table th {
+            color: #2d4ca8;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -93,7 +102,51 @@
                 </div>
             </div>
 
-            <p>Halaman ini akan menampilkan riwayat pelanggaran siswa. Tabel akan ditambahkan setelah data siap.</p>
+            <!-- TABEL HISTORY -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th>Bentuk Pelanggaran</th>
+                            <th>Poin</th>
+                            <th>Tanggal</th>
+                            <th>Bukti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($data as $index => $item)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $item->nama_siswa }}</td>
+                            <td>{{ $item->kelas }}</td>
+                            <td>{{ $item->jurusan }}</td>
+                            <td>{{ $item->bentuk_pelanggaran }}</td>
+                            <td>{{ $item->poin }}</td>
+                            <td>{{ $item->created_at->format('d-m-Y') }}</td>
+                            <td>
+                                @if($item->bukti)
+                                    <a href="{{ asset('storage/bukti/' . $item->bukti) }}" target="_blank" class="btn btn-sm btn-info">
+                                        Lihat Bukti
+                                    </a>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">
+                                Belum ada data pelanggaran
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
