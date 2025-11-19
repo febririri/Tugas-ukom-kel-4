@@ -136,6 +136,7 @@
 
     <a href="#" class="nav-link">Pelanggaran Siswa</a>
     <a href="{{ route('penghargaan') }}" class="nav-link active">Penghargaan</a>
+    <a href="kelas" class="nav-link">Kelas</a>
     <a href="siswa" class="nav-link">Siswa</a>
     <a href="guru" class="nav-link">Guru</a>
     

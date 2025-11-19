@@ -25,12 +25,16 @@
 <div class="container mt-4">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="fw-bold">{{ $kategori }}</h3>
+        <h3 class="fw-bold">Kategori: {{ $kategori->nama_kategori }}</h3>
 
-        <a href="{{ url('/tambah_bentuk/'.$kategori) }}" class="btn btn-primary">
+        <a href="{{ route('bentuk.tambah', $kategori->id) }}" class="btn btn-primary">
             + Tambah Bentuk Pelanggaran
         </a>
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
     <div class="card card-kategori p-3">
 
@@ -48,18 +52,10 @@
                 @forelse ($bentuk as $i => $row)
                 <tr>
                     <td>{{ $i + 1 }}</td>
-                    <td>{{ $row['nama_bentuk'] }}</td>
-                    <td>{{ $row['poin'] }}</td>
+                    <td>{{ $row->nama_bentuk }}</td>
+                    <td>{{ $row->poin }}</td>
 
-                    <td>
-                        <a href="{{ url('/edit_bentuk/'.$kategori.'/'.$i) }}" class="btn btn-edit btn-sm">Edit</a>
-
-                        <a href="{{ url('/hapus_bentuk/'.$kategori.'/'.$i) }}"
-                           class="btn btn-hapus btn-sm"
-                           onclick="return confirm('Yakin Hapus?')">
-                           Hapus
-                        </a>
-                    </td>
+                 
                 </tr>
                 @empty
                 <tr>

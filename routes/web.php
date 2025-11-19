@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PelanggaranController;
-
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\BentukController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SanksiPelanggaranController;
+use App\Http\Controllers\KelasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,140 +55,92 @@ Route::get('/penghargaan', fn() => view('template.penghargaan'))->name('pengharg
 | KATEGORI PELANGGARAN (JSON)
 |--------------------------------------------------------------------------
 */
-// Tampil kategori + jumlah bentuk pelanggaran
-Route::get('/kategori_pelanggaran', function () {
+// Halaman utama kategori pelanggaran (ambil dari database)
+Route::get('/kategori_pelanggaran', [KategoriController::class, 'index'])
+    ->name('kategori.pelanggaran');
 
-    $pathKategori = public_path('kategori.json');
-    $pathBentuk   = public_path('bentuk_pelanggaran.json');
 
-    $kategori = file_exists($pathKategori) ? json_decode(file_get_contents($pathKategori), true) : [];
-    $bentuk   = file_exists($pathBentuk)   ? json_decode(file_get_contents($pathBentuk), true)   : [];
+// Simpan kategori baru ke database
+Route::post('/kategori/tambah', [KategoriController::class, 'store'])
+    ->name('kategori.simpan');
 
-    // Tambahkan jumlah bentuk pelanggaran ke tiap kategori
-    foreach ($kategori as &$row) {
-        $row['jumlah_bentuk'] = collect($bentuk)
-            ->where('kategori', $row['nama_kategori'])
-            ->count();
-    }
+// Hapus kategori
+Route::delete('/kategori/hapus/{id}', [KategoriController::class, 'destroy'])
+    ->name('kategori.hapus');
 
-    return view('template.kategori_pelanggaran', compact('kategori'));
-})->name('kategori.pelanggaran');
+// Edit kategori (tampilkan form)
+Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])
+    ->name('kategori.edit');
 
-// Simpan kategori baru
-Route::post('/kategori/tambah', function () {
-    $path = public_path('kategori.json');
-    $existing = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-
-    $data = [
-        'id' => time(),
-        'nama_kategori' => request('nama_kategori'),
-    ];
-
-    $existing[] = $data;
-    file_put_contents($path, json_encode($existing, JSON_PRETTY_PRINT));
-
-    return redirect()->route('kategori.pelanggaran')->with('success', 'Kategori berhasil ditambahkan!');
-})->name('kategori.simpan');
-
+// Update kategori
+Route::post('/kategori/update/{id}', [KategoriController::class, 'update'])
+    ->name('kategori.update');
 /*
 |--------------------------------------------------------------------------
-| BENTUK PELANGGARAN
+| BENTUK PELANGGARAN (DATABASE)
 |--------------------------------------------------------------------------
 */
-// Tampil list bentuk pelanggaran
-Route::get('/bentuk_pelanggaran/{kategori}', function ($kategori) {
-    $path = public_path('bentuk_pelanggaran.json');
-    $all = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-    $bentuk = collect($all)->where('kategori', $kategori)->values()->all();
-    return view('template.bentuk_pelanggaran', compact('kategori', 'bentuk'));
-});
 
-// Form tambah bentuk pelanggaran
-Route::get('/tambah_bentuk/{kategori}', function ($kategori) {
-    return view('template.tambah_bentuk', compact('kategori'));
-});
+// halaman daftar bentuk berdasarkan kategori
+Route::get('/bentuk/{id}', [BentukController::class, 'index'])->name('bentuk.index');
 
-// Simpan bentuk pelanggaran
-Route::post('/tambah_bentuk/{kategori}', function ($kategori) {
+// halaman tambah bentuk pelanggaran
+Route::get('/bentuk/tambah/{id}', [BentukController::class, 'create'])->name('bentuk.create');
 
-    $path = public_path('bentuk_pelanggaran.json');
-    $existing = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+// simpan bentuk pelanggaran
+Route::post('/bentuk/store', [BentukController::class, 'store'])->name('bentuk.store');
 
-    $data = [
-        'kategori'    => $kategori,
-        'nama_bentuk' => request('nama_bentuk'),
-        'poin'        => request('poin'),
-    ];
+// hapus bentuk pelanggaran
+Route::get('/bentuk/hapus/{id}', [BentukController::class, 'destroy'])->name('bentuk.delete');
 
-    $existing[] = $data;
-    file_put_contents($path, json_encode($existing, JSON_PRETTY_PRINT));
+// Form tambah bentuk
+Route::get('/kategori/{id}/bentuk/tambah', [BentukController::class, 'create'])
+    ->name('bentuk.tambah');
 
-    return redirect('/bentuk_pelanggaran/' . $kategori)->with('success', 'Bentuk pelanggaran berhasil ditambahkan!');
-});
+
 
 /*
 |--------------------------------------------------------------------------
 | SANKSI PELANGGARAN
 |--------------------------------------------------------------------------
 */
-Route::get('/sanksi_pelanggaran', function () {
-    $path = public_path('sanksi_pelanggaran.json');
-    $sanksi = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-    return view('template.sanksi_pelanggaran', compact('sanksi'));
-})->name('sanksi.pelanggaran');
+// Halaman daftar sanksi
+Route::get('/sanksi_pelanggaran', [SanksiPelanggaranController::class, 'index'])
+    ->name('sanksi.pelanggaran');
 
-Route::post('/sanksi/simpan', function () {
-    $path = public_path('sanksi_pelanggaran.json');
-    $existing = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+// Halaman form tambah
+Route::get('/sanksi/tambah', [SanksiPelanggaranController::class, 'create'])
+    ->name('sanksi.tambah');
 
-    $data = [
-        'kriteria_pelanggaran' => request('kriteria_pelanggaran'),
-        'poin_dari'            => (int) request('poin_dari'),
-        'poin_sampai'          => (int) request('poin_sampai'),
-        'sanksi'               => request('sanksi'),
-    ];
+// Simpan ke database
+Route::post('/sanksi/simpan', [SanksiPelanggaranController::class, 'store'])
+    ->name('sanksi.simpan');
 
-    $existing[] = $data;
-    file_put_contents($path, json_encode($existing, JSON_PRETTY_PRINT));
+Route::get('/sanksi/edit/{id}', [SanksiPelanggaranController::class, 'edit'])
+    ->name('sanksi.edit');
 
-    return redirect()->route('sanksi.pelanggaran')->with('success', 'Sanksi berhasil ditambahkan!');
-})->name('sanksi.simpan');
+Route::delete('/sanksi/hapus/{id}', [SanksiPelanggaranController::class, 'destroy'])
+    ->name('sanksi.hapus');
+
 
 /*
 |--------------------------------------------------------------------------
 | DATA SISWA
 |--------------------------------------------------------------------------
 */
-Route::get('/siswa', function () {
-    $path = public_path('siswa.json');
-    $siswa = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-    return view('template.siswa', compact('siswa'));
-})->name('siswa');
 
-Route::post('/siswa/simpan', function () {
-    $path = public_path('siswa.json');
-    $existing = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-    $filename = null;
 
-    if (request()->hasFile('foto')) {
-        $file = request()->file('foto');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('foto_siswa'), $filename);
-    }
+// Tambah siswa harus diletakkan dulu 
+Route::get('/kelas/{id}/siswa/create', [SiswaController::class, 'create'])
+    ->name('siswa.create');
 
-    $data = [
-        'nama'  => request('nama'),
-        'nis'   => request('nis'),
-        'kelas' => request('kelas'),
-        'foto'  => $filename,
-    ];
+// Simpan siswa
+Route::post('/kelas/{id}/siswa/simpan', [SiswaController::class, 'store'])
+    ->name('kelas.siswa.simpan');
 
-    $existing[] = $data;
-    file_put_contents($path, json_encode($existing, JSON_PRETTY_PRINT));
-
-    return redirect()->route('siswa')->with('success', 'Data siswa berhasil ditambahkan!');
-});
-
+// Baru lihat siswa
+Route::get('/kelas/{id}/siswa', [KelasController::class, 'lihatSiswa'])
+    ->name('kelas.siswa');
 /*
 |--------------------------------------------------------------------------
 | DATA GURU
@@ -222,6 +178,30 @@ Route::post('/guru/simpan', function () {
     return redirect()->route('guru')->with('success', 'Data guru berhasil ditambahkan!');
 });
 
+/*
+|--------------------------------------------------------------------------
+| DATA KELAS
+|--------------------------------------------------------------------------
+*/
+Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
+
+Route::post('/kelas/simpan', [KelasController::class, 'simpan'])->name('kelas.simpan');
+
+Route::get('/kelas/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
+
+Route::post('/kelas/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
+
+Route::get('/kelas/hapus/{id}', [KelasController::class, 'hapus'])->name('kelas.hapus');
+
+// Lihat siswa berdasarkan kelas
+Route::get('/kelas/{id}/siswa', [KelasController::class, 'lihatSiswa'])->name('kelas.siswa');
+
+// Print kelas
+Route::get('/kelas/print/{id}', [KelasController::class, 'print'])->name('kelas.print');
+
+
+
+//EKA DAN ICHA (GURU)
 Route::view('/penghargaan', 'template.penghargaan')->middleware('auth')->name('penghargaan');
 Route::view('/sanksi', 'template.sanksi')->middleware('auth')->name('sanksi');
 

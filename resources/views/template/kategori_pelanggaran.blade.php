@@ -12,10 +12,6 @@
         background: #f5f5f5;
         font-family: Arial, sans-serif;
     }
-    .card-kategori {
-        border-radius: 12px;
-        box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    }
 </style>
 </head>
 <body>
@@ -25,13 +21,19 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold">Kategori Pelanggaran</h3>
 
-        <a href="{{ url('/tambah_kategori') }}" class="btn btn-primary">
+        <!-- Tombol buka modal -->
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahKategori">
             + Tambah Jenis Pelanggaran
-        </a>
+        </button>
+        
     </div>
 
-    <div class="card card-kategori p-3">
+    <!-- Notifikasi -->
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
+    <div class="card p-3">
         <table class="table align-middle">
             <thead class="table-light">
                 <tr>
@@ -40,61 +42,82 @@
                     <th>Bentuk Pelanggaran</th>
                     <th>Aksi</th>
                 </tr>
+          
             </thead>
 
-            <tbody>
+         <tbody>
+@foreach($kategori as $i => $row)
+<tr>
+    <td>{{ $i + 1 }}</td>
+    <td>{{ $row->nama_kategori }}</td>
+<td>
+    {{ $row->bentuk_count }} 
+</td>
+    <td></td>
 
-                @php
-                    // Ambil semua bentuk pelanggaran
-                    $path = public_path('bentuk_pelanggaran.json');
-                    $bentuk_all = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-                @endphp
+    <!-- Kolom Aksi -->
+    <td>
+        <a href="{{ route('bentuk.index', $row->id) }}" class="btn btn-sm btn-primary">
+            Lihat Bentuk
+        </a>
 
-                @foreach($kategori as $i => $row)
+        <a href="{{ route('kategori.edit', $row->id) }}" class="btn btn-sm btn-warning">
+            Edit
+        </a>
 
-                    @php
-                        // Hitung jumlah bentuk berdasarkan kategori
-                        $jumlah_bentuk = collect($bentuk_all)
-                                            ->where('kategori', $row['nama_kategori'])
-                                            ->count();
-                    @endphp
-
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-
-                        <td>{{ $row['nama_kategori'] }}</td>
-
-                        <td>{{ $jumlah_bentuk }}</td>
-
-                        <td>
-                            <!-- Tombol ke bentuk pelanggaran -->
-                            <a href="{{ url('/bentuk_pelanggaran/' . $row['nama_kategori']) }}"
-                               class="btn btn-primary btn-sm">
-                                Bentuk ({{ $jumlah_bentuk }})
-                            </a>
-
-                            <a href="{{ url('/edit_kategori/' . $i) }}"
-                               class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-
-                            <a href="{{ url('/hapus_kategori/' . $i) }}"
-                               onclick="return confirm('Yakin hapus?')"
-                               class="btn btn-danger btn-sm">
-                                Hapus
-                            </a>
-                        </td>
-                    </tr>
-
-                @endforeach
-
-            </tbody>
+        <form action="{{ route('kategori.hapus', $row->id) }}" method="POST" style="display:inline;">
+    @csrf
+    @method('DELETE')
+    <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus kategori?')">Hapus</button>
+</form>
+    </td>
+</tr>
+@endforeach
+</tbody>
 
         </table>
-
     </div>
-
 </div>
+
+
+<!-- MODAL TAMBAH KATEGORI -->
+<div class="modal fade" id="modalTambahKategori">
+    <div class="modal-dialog">
+        
+        <div class="modal-content">
+
+            <form action="{{ route('kategori.simpan') }}" method="POST">
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Jenis Pelanggaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Kategori</label>
+                        <input type="text" name="nama_kategori" class="form-control" required>
+                    </div>
+
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+ 
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

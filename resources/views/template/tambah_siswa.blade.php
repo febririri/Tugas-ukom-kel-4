@@ -26,41 +26,40 @@
     <h4 class="fw-bold mb-3">Tambah Siswa</h4>
 
     <div class="card card-form p-4">
+        
 
-        <form action="{{ url('/siswa/simpan') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+<form action="{{ route('kelas.siswa.simpan',$kelas->id) }}" method="POST" enctype="multipart/form-data">
+@csrf
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Nama Siswa</label>
-                <input type="text" name="nama" class="form-control" required>
-            </div>
+<input type="hidden" name="kelas" value="{{ $kelas->nama_kelas }}">
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">NIS</label>
-                <input type="number" name="nis" class="form-control" required>
-            </div>
+ <div class="mb-3">
+        <label class="form-label">Kelas</label>
+        <input type="text" class="form-control" value="{{ $kelas->nama_kelas }}" readonly>
+    </div>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Kelas</label>
-                <input type="text" name="kelas" class="form-control" required>
-            </div>
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Nama Siswa</label>
+        <input type="text" name="nama" class="form-control" required>
+    </div>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Foto Siswa</label>
-                <input type="file" name="foto" class="form-control" accept="image/*" required>
-            </div>
+    <div class="mb-3">
+        <label class="form-label fw-semibold">NIS</label>
+        <input type="number" name="nis" class="form-control" required>
+    </div>
 
-            <div class="d-flex justify-content-between">
-                <a href="{{ url('/siswa') }}" class="btn btn-secondary px-4">
-                    Kembali
-                </a>
 
-                <button type="submit" class="btn btn-primary px-4">
-                    Simpan
-                </button>
-            </div>
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Foto Siswa</label>
+        <input type="file" name="foto" class="form-control" required>
+    </div>
 
-        </form>
+    <div class="d-flex justify-content-between">
+        <a href="{{ url('/siswa') }}" class="btn btn-secondary px-4">Kembali</a>
+        <button type="submit" class="btn btn-primary px-4">Simpan</button>
+    </div>
+</form>
+
     </div>
 </div>
 
