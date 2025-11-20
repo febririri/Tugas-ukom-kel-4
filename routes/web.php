@@ -206,6 +206,7 @@ Route::view('/penghargaan', 'template.penghargaan')->middleware('auth')->name('p
 Route::view('/sanksi', 'template.sanksi')->middleware('auth')->name('sanksi');
 
 
+
 // ============================================
 // BACKEND PELANGGARAN
 // ============================================
