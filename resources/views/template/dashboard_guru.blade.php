@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Guru - SistemPoin</title>
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -17,7 +16,6 @@
       color: #1e293b;
     }
 
-    /* Sidebar */
     .sidebar {
       height: 100vh;
       background-color: #e8f0ff;
@@ -43,16 +41,15 @@
       display: block;
       border-radius: 8px;
       margin: 5px 15px;
-      transition: all 0.2s ease;
+      transition: 0.2s;
     }
 
     .sidebar .nav-link:hover,
-    .sidebar .nav-link.active {
+    .sidebar .active {
       background-color: #dbeafe;
       color: #2563eb;
     }
 
-    /* Main content */
     .main-content {
       margin-left: 250px;
       padding: 25px;
@@ -66,45 +63,17 @@
       margin-bottom: 25px;
     }
 
-    .topbar h5 {
-      color: #2563eb;
-      font-weight: 700;
-    }
-
-    .search-box input {
-      border: 1px solid #dbeafe;
-      border-radius: 25px;
-      padding: 6px 14px;
-      background-color: #f8fbff;
-    }
-
     .card {
       border: none;
       border-radius: 12px;
-      background-color: #ffffff;
+      background-color: #fff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: 0.2s;
     }
 
     .card:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .card h5, .card h6 {
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    .btn-primary {
-      background-color: #3b82f6;
-      border: none;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: #2563eb;
     }
 
     footer {
@@ -120,14 +89,16 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <h4>SistemPoin</h4>
-    <a href="#" class="nav-link active">Dashboard</a>
+
+    <a href="{{ route('dashboard.guru') }}" class="nav-link active">Dashboard</a>
     <a href="{{ route('input.pelanggaran') }}" class="nav-link">Input Pelanggaran</a>
-    <a href="sanksi" class="nav-link">Sanksi Pelanggaran</a>
-    <a href="{{ route('penghargaan') }}" class="nav-link active">Penghargaan</a>
-    <a href="{{ route('history.pelanggaran') }}" class="nav-link">history</a>
+    <a href="{{ route('sanksi.pelanggaran') }}" class="nav-link">Sanksi Pelanggaran</a>
+    <a href="{{ route('penghargaan') }}" class="nav-link">Penghargaan</a>
+    <a href="{{ route('history.pelanggaran') }}" class="nav-link">History</a>
   </div>
 
   <div class="main-content">
+
     <!-- Topbar -->
     <div class="topbar d-flex justify-content-between align-items-center">
       <h5 class="mb-0">Dashboard Guru</h5>
@@ -146,6 +117,7 @@
           <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="card p-3 text-center">
           <h6 class="fw-semibold mb-1">Gio Sanjaya</h6>
@@ -155,6 +127,7 @@
           <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="card p-3 text-center">
           <h6 class="fw-semibold mb-1">Rafi Santoso</h6>
@@ -164,6 +137,7 @@
           <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="card p-3 text-center">
           <h6 class="fw-semibold mb-1">Muhammad Ali</h6>
@@ -178,13 +152,13 @@
     <div class="row g-3">
       <div class="col-md-6">
         <div class="card p-3">
-          <h5>Top 5 Pelanggaran yang Sering Dilakukan</h5>
+          <h5>Top 5 Pelanggaran</h5>
           <ul class="mt-3 mb-0">
-            <li>Tidak Memasukkan Baju (Siswa Putra) 5x</li>
-            <li>Meninggalkan Kelas Tanpa Izin 3x</li>
-            <li>Tidak Mengikuti Upacara 2x</li>
-            <li>Berkata Kotor dengan Guru 2x</li>
-            <li>Tidak Mengikuti Pelajaran Tanpa Izin 2x</li>
+            <li>Tidak Memasukkan Baju – 5x</li>
+            <li>Meninggalkan Kelas Tanpa Izin – 3x</li>
+            <li>Tidak Mengikuti Upacara – 2x</li>
+            <li>Berkata Kotor ke Guru – 2x</li>
+            <li>Tidak Mengikuti Pelajaran – 2x</li>
           </ul>
         </div>
       </div>
@@ -192,11 +166,7 @@
       <div class="col-md-6">
         <div class="card p-3">
           <h5>Grafik Pelanggaran per Jurusan</h5>
-
-          <!-- GRAFIK START -->
           <canvas id="grafikPelanggaran" height="160"></canvas>
-          <!-- GRAFIK END -->
-
         </div>
       </div>
     </div>
@@ -207,24 +177,20 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- CHART.JS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- SCRIPT GRAFIK -->
   <script>
     const ctx = document.getElementById('grafikPelanggaran').getContext('2d');
 
     new Chart(ctx, {
-      type: 'line', // grafik naik turun
+      type: 'line',
       data: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
         datasets: [{
           label: 'Pelanggaran per Jurusan',
-          data: [30, 45, 28, 60, 40, 70], // contoh data
+          data: [30, 45, 28, 60, 40, 70],
           borderWidth: 3,
-          tension: 0.4,     // bikin garis melengkung
-          fill: false,
+          tension: 0.4,
           borderColor: '#2563eb',
           pointBackgroundColor: '#1d4ed8',
           pointRadius: 5
@@ -232,16 +198,11 @@
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
+        plugins: { legend: { display: false }},
+        scales: { y: { beginAtZero: true }}
       }
     });
   </script>
+
 </body>
 </html>

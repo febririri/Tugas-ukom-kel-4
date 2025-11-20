@@ -57,7 +57,7 @@
 </a>
         <a href="{{ route('kelas.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
         <a href="{{ route('kelas.hapus', $row->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</a>
-        <a href="{{ route('kelas.print', $row->id) }}" class="btn btn-primary btn-sm">Print</a>
+     
     </td>
 </tr>
 @empty

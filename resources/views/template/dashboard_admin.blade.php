@@ -221,7 +221,7 @@
     </div>
 
     <footer>
-      <p>&copy; 2025 SistemPoin | Dashboard Guru</p>
+      <p>&copy; 2025 SistemPoin | Dashboard Admin</p>
     </footer>
   </div>
 
