@@ -27,9 +27,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold">Data Guru</h4>
 
-        <a href="{{ url('/tambah_guru') }}" class="btn btn-primary px-4 py-2">
-            + Tambah Guru
-        </a>
+        <a href="{{ route('guru.create') }}" class="btn btn-primary">+ Tambah Guru</a>
     </div>
 
     <div class="card card-box p-4">
@@ -37,33 +35,39 @@
             <thead class="table-primary">
                 <tr>
                     <th>No</th>
-                 
                     <th>Nama Guru</th>
                     <th>NIP</th>
-                  
                     <th>Aksi</th>
                 </tr>
             </thead>
 
             <tbody>
-                @forelse($guru ?? [] as $i => $row)
+                @forelse($guru as $i => $row)
                 <tr>
                     <td>{{ $i + 1 }}</td>
 
-                    
-
-                    <td>{{ $row['nama'] }}</td>
-                    <td>{{ $row['nip'] }}</td>
-                 
+                    <td>{{ $row->nama }}</td>
+                    <td>{{ $row->nip }}</td>
 
                     <td>
-                        <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="#" class="btn btn-danger btn-sm">Hapus</a>
+                        <a href="{{ route('guru.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                        <form action="{{ route('guru.destroy', $row->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                onclick="return confirm('Yakin ingin menghapus?')"
+                                class="btn btn-danger btn-sm">
+                                Hapus
+                            </button>
+                        </form>
                     </td>
+
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted">
+                    <td colspan="4" class="text-center text-muted">
                         Belum ada data guru.
                     </td>
                 </tr>
@@ -73,7 +77,6 @@
         </table>
     </div>
 </div>
-
 
 </body>
 </html>

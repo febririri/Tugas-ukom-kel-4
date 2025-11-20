@@ -8,7 +8,7 @@ use App\Http\Controllers\BentukController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SanksiPelanggaranController;
 use App\Http\Controllers\KelasController;
-
+use App\Http\Controllers\GuruController;
 /*
 |--------------------------------------------------------------------------
 | HALAMAN UTAMA
@@ -168,43 +168,22 @@ Route::get('/siswa/hapus/{id}', [SiswaController::class, 'destroy'])
 Route::get('/siswa/detail/{id}', [SiswaController::class, 'show'])
     ->name('siswa.show');
 
-/*
-|--------------------------------------------------------------------------
-| DATA GURU
-|--------------------------------------------------------------------------
-*/
-Route::get('/guru', function () {
-    $path = public_path('guru.json');
+/// daftar guru
+Route::get('/guru', [GuruController::class, 'index'])->name('guru.index');
 
-    $guru = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+// create + store
+Route::get('/guru/create', [GuruController::class, 'create'])->name('guru.create');
+Route::post('/guru/store', [GuruController::class, 'store'])->name('guru.store');
 
-    return view('template.guru', compact('guru'));
-})->name('guru');
+// show
+Route::get('/guru/{id}', [GuruController::class, 'show'])->name('guru.show');
 
-// FORM TAMBAH GURU
-Route::get('/tambah_guru', function () {
-    return view('template.tambah_guru'); 
-});
+// edit + update
+Route::get('/guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
+Route::post('/guru/{id}/update', [GuruController::class, 'update'])->name('guru.update');
 
-
-Route::post('/guru/simpan', function () {
-    $path = public_path('guru.json');
-    $existing = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-    $filename = null;
-
-
-    $data = [
-        'nama'  => request('nama'),
-        'nip'   => request('nip'),
-      
-    ];
-
-    $existing[] = $data;
-    file_put_contents($path, json_encode($existing, JSON_PRETTY_PRINT));
-
-    return redirect()->route('guru')->with('success', 'Data guru berhasil ditambahkan!');
-});
-
+// hapus
+Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
 /*
 |--------------------------------------------------------------------------
 | DATA KELAS

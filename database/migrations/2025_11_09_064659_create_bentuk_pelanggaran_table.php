@@ -13,16 +13,10 @@ return new class extends Migration
     {
         Schema::create('bentuk_pelanggaran', function (Blueprint $table) {
     $table->id();
-
-    // foreign key ke kategori_pelanggaran
     $table->unsignedBigInteger('id_kategori_pelanggaran');
-
     $table->string('nama_bentuk');
     $table->integer('poin');
-
     $table->timestamps();
-
-    // relasi
     $table->foreign('id_kategori_pelanggaran')
           ->references('id')
           ->on('kategori_pelanggaran')
