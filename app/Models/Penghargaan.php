@@ -9,11 +9,17 @@ class Penghargaan extends Model
     protected $table = 'penghargaan';
 
     protected $fillable = [
-        'nama_siswa',
+        'siswa_id',
         'jenis_penghargaan',
         'poin',
         'keterangan',
-        'foto' 
+        'foto'
     ];
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
 }
+
 

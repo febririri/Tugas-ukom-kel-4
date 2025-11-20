@@ -1,56 +1,55 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PelanggaranController;
+use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\SanksiController;
 
-// Halaman utama
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application.
+| These routes are loaded by the RouteServiceProvider and all of them
+| will be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+// ==============================
+// HALAMAN UTAMA
+// ==============================
 Route::get('/', function () {
-    return view('index');
-});
+    return view('welcome'); // resources/views/welcome.blade.php
+})->name('home');
 
-// Login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-
-// Dashboard
-Route::get('/dashboard-admin', function () {
-    return view('template.dashboard_admin');
-})->middleware('auth')->name('dashboard.admin');
-
+// ==============================
+// DASHBOARD GURU
+// ==============================
 Route::get('/dashboard-guru', function () {
-    return view('template.dashboard_guru');
-})->middleware('auth')->name('dashboard.guru');
+    return view('dashboard-guru'); // resources/views/dashboard-guru.blade.php
+})->name('dashboard.guru');
 
-// Halaman tambahan
-Route::view('/penghargaan', 'template.penghargaan')->middleware('auth')->name('penghargaan');
-Route::view('/sanksi', 'template.sanksi')->middleware('auth')->name('sanksi');
+// ==============================
+// FORM PENGHARGAAN
+// ==============================
+Route::get('/penghargaan', [PenghargaanController::class, 'index'])
+    ->name('penghargaan');
 
+Route::post('/penghargaan/store', [PenghargaanController::class, 'store'])
+    ->name('penghargaan.store');
 
-// ============================================
-// BACKEND PELANGGARAN
-// ============================================
+// ==============================
+// FORM SANKSI
+// ==============================
+Route::get('/sanksi', [SanksiController::class, 'index'])
+    ->name('sanksi');
 
-// FORM Input Pelanggaran
-Route::get('/input-pelanggaran', [PelanggaranController::class, 'create'])
-    ->name('input.pelanggaran')
-    ->middleware('auth');
+Route::post('/sanksi/store', [SanksiController::class, 'store'])
+    ->name('sanksi.store');
 
-// Simpan Pelanggaran
-Route::post('/input-pelanggaran/store', [PelanggaranController::class, 'store'])
-    ->name('pelanggaran.store')
-    ->middleware('auth');
-
-// History Pelanggaran
-Route::get('/history/pelanggaran', [PelanggaranController::class, 'index'])
-    ->name('history.pelanggaran')
-    ->middleware('auth');
-
-
-// MINI SIDEBAR — History Penghargaan
-Route::get('/history/penghargaan', function () {
-    return view('history_penghargaan');
-})->name('history.penghargaan')->middleware('auth');
-
-// Logout
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+// ==============================
+// FORM INPUT PELANGGARAN (JIKA ADA)
+// ==============================
+Route::get('/input-pelanggaran', function () {
+    return view('input_pelanggaran'); // resources/views/input_pelanggaran.blade.php
+})->name('input.pelanggaran');
