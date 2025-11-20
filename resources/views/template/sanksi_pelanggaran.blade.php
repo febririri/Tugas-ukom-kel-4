@@ -40,30 +40,25 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $row->kriteria_pelanggaran }}</td>
                         <td>{{ $row->poin_dari }} - {{ $row->poin_sampai }}</td>
-                        <td>
-                            <!-- TOMBOL LIHAT -->
-                            <button class="btn btn-info btn-sm"
+                       <td>
+    <div class="d-flex gap-2">
+    <button class="btn btn-info btn-sm"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalSanksi{{ $row->id }}">
                                 Lihat Sanksi
                             </button>
+        <a href="{{ route('sanksi.edit', $row->id) }}" class="btn btn-warning btn-sm">
+            Edit
+        </a>
 
-                            <!-- EDIT -->
-                            <a href="{{ route('sanksi.edit', $row->id) }}" class="btn btn-edit btn-sm">
-                                Edit
-                            </a>
+        <a href="{{ route('sanksi.hapus', $row->id) }}" 
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Yakin ingin menghapus?')">
+           Hapus
+        </a>
 
-                            <!-- HAPUS -->
-                            <form action="{{ route('sanksi.hapus', $row->id) }}"
-                                  method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-hapus btn-sm"
-                                        onclick="return confirm('Hapus data ini?')">
-                                    Hapus
-                                </button>
-                            </form>
-                        </td>
+    </div>
+</td>
                     </tr>
 
                     <!-- MODAL LIHAT SANKSI -->

@@ -53,23 +53,24 @@
 <td>
     {{ $row->bentuk_count }} 
 </td>
-    <td></td>
-
-    <!-- Kolom Aksi -->
+    
+    
     <td>
+         <div class="d-flex gap-2">
         <a href="{{ route('bentuk.index', $row->id) }}" class="btn btn-sm btn-primary">
             Lihat Bentuk
         </a>
 
-        <a href="{{ route('kategori.edit', $row->id) }}" class="btn btn-sm btn-warning">
-            Edit
-        </a>
-
-        <form action="{{ route('kategori.hapus', $row->id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus kategori?')">Hapus</button>
+      <form action="{{ route('kategori.edit', $row->id) }}" method="GET">
+    <button class="btn btn-warning btn-sm">Edit</button>
 </form>
+
+      <a href="{{ route('kategori.hapus', $row->id) }}" 
+   class="btn btn-danger"
+   onclick="return confirm('Yakin ingin menghapus?')">
+   Hapus
+</a>
+ </div>
     </td>
 </tr>
 @endforeach

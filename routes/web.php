@@ -65,8 +65,9 @@ Route::post('/kategori/tambah', [KategoriController::class, 'store'])
     ->name('kategori.simpan');
 
 // Hapus kategori
-Route::delete('/kategori/hapus/{id}', [KategoriController::class, 'destroy'])
+Route::get('/hapus_kategori/{id}', [KategoriController::class, 'destroy'])
     ->name('kategori.hapus');
+
 
 // Edit kategori (tampilkan form)
 Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])
@@ -81,21 +82,23 @@ Route::post('/kategori/update/{id}', [KategoriController::class, 'update'])
 |--------------------------------------------------------------------------
 */
 
-// halaman daftar bentuk berdasarkan kategori
+// tampil daftar bentuk
 Route::get('/bentuk/{id}', [BentukController::class, 'index'])->name('bentuk.index');
 
-// halaman tambah bentuk pelanggaran
+// form tambah
 Route::get('/bentuk/tambah/{id}', [BentukController::class, 'create'])->name('bentuk.create');
 
-// simpan bentuk pelanggaran
+// simpan bentuk
 Route::post('/bentuk/store', [BentukController::class, 'store'])->name('bentuk.store');
 
-// hapus bentuk pelanggaran
-Route::get('/bentuk/hapus/{id}', [BentukController::class, 'destroy'])->name('bentuk.delete');
+// form edit
+Route::get('/bentuk/edit/{id}', [BentukController::class, 'edit'])->name('bentuk.edit');
 
-// Form tambah bentuk
-Route::get('/kategori/{id}/bentuk/tambah', [BentukController::class, 'create'])
-    ->name('bentuk.tambah');
+// update bentuk
+Route::post('/bentuk/update/{id}', [BentukController::class, 'update'])->name('bentuk.update');
+
+// hapus bentuk
+Route::get('/bentuk/hapus/{id}', [BentukController::class, 'destroy'])->name('bentuk.delete');
 
 
 
@@ -104,22 +107,28 @@ Route::get('/kategori/{id}/bentuk/tambah', [BentukController::class, 'create'])
 | SANKSI PELANGGARAN
 |--------------------------------------------------------------------------
 */
-// Halaman daftar sanksi
+/// HALAMAN LIST
 Route::get('/sanksi_pelanggaran', [SanksiPelanggaranController::class, 'index'])
     ->name('sanksi.pelanggaran');
 
-// Halaman form tambah
+// FORM TAMBAH
 Route::get('/sanksi/tambah', [SanksiPelanggaranController::class, 'create'])
     ->name('sanksi.tambah');
 
-// Simpan ke database
+// SIMPAN DATA
 Route::post('/sanksi/simpan', [SanksiPelanggaranController::class, 'store'])
     ->name('sanksi.simpan');
 
+// FORM EDIT
 Route::get('/sanksi/edit/{id}', [SanksiPelanggaranController::class, 'edit'])
     ->name('sanksi.edit');
 
-Route::delete('/sanksi/hapus/{id}', [SanksiPelanggaranController::class, 'destroy'])
+// UPDATE DATA
+Route::post('/sanksi/update/{id}', [SanksiPelanggaranController::class, 'update'])
+    ->name('sanksi.update');
+
+// HAPUS DATA
+Route::get('/sanksi/hapus/{id}', [SanksiPelanggaranController::class, 'destroy'])
     ->name('sanksi.hapus');
 
 
@@ -130,7 +139,9 @@ Route::delete('/sanksi/hapus/{id}', [SanksiPelanggaranController::class, 'destro
 */
 
 
-// Tambah siswa harus diletakkan dulu 
+
+
+// Tambah siswa
 Route::get('/kelas/{id}/siswa/create', [SiswaController::class, 'create'])
     ->name('siswa.create');
 
@@ -138,9 +149,25 @@ Route::get('/kelas/{id}/siswa/create', [SiswaController::class, 'create'])
 Route::post('/kelas/{id}/siswa/simpan', [SiswaController::class, 'store'])
     ->name('kelas.siswa.simpan');
 
-// Baru lihat siswa
+// Lihat siswa
 Route::get('/kelas/{id}/siswa', [KelasController::class, 'lihatSiswa'])
     ->name('kelas.siswa');
+
+// Edit siswa
+Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit'])
+    ->name('siswa.edit');
+
+// Update siswa
+Route::post('/siswa/update/{id}', [SiswaController::class, 'update'])
+    ->name('siswa.update');
+
+// Hapus siswa
+Route::get('/siswa/hapus/{id}', [SiswaController::class, 'destroy'])
+    ->name('siswa.hapus');
+
+Route::get('/siswa/detail/{id}', [SiswaController::class, 'show'])
+    ->name('siswa.show');
+
 /*
 |--------------------------------------------------------------------------
 | DATA GURU

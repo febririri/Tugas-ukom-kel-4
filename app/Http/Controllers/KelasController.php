@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 
 class KelasController extends Controller
 {
-    public function index()
-    {
-        $kelas = Kelas::all();
-        return view('template.kelas', compact('kelas'));
-    }
+   public function index()
+{
+    // Ambil semua kelas + hitung jumlah siswa otomatis
+    $kelas = Kelas::withCount('siswa')->get();
+
+    return view('template.kelas', compact('kelas'));
+}
 
     public function simpan(Request $request)
     {
@@ -55,8 +57,6 @@ class KelasController extends Controller
     public function lihatSiswa($id)
     {
         $kelas = Kelas::findOrFail($id);
-
-        // ambil siswa sesuai nama kelas
         $siswa = Siswa::where('kelas', $kelas->nama_kelas)->get();
 
         return view('template.siswa', compact('siswa', 'kelas'));

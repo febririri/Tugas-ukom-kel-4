@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class BentukController extends Controller
 {
+    public function edit($id)
+{
+    $bentuk = DB::table('bentuk_pelanggaran')->where('id', $id)->first();
+    $kategori = DB::table('kategori_pelanggaran')->where('id', $bentuk->id_kategori_pelanggaran)->first();
+
+    return view('template.edit_bentuk', compact('bentuk', 'kategori'));
+}
+
     // tampilkan form tambah bentuk
     public function create($id)
     {
@@ -26,6 +34,20 @@ class BentukController extends Controller
 
         return view('template.bentuk_pelanggaran', compact('kategori', 'bentuk'));
     }
+
+    public function update(Request $request, $id)
+{
+    DB::table('bentuk_pelanggaran')
+        ->where('id', $id)
+        ->update([
+            'nama_bentuk' => $request->nama_bentuk,
+            'poin' => $request->poin,
+            'updated_at' => now()
+        ]);
+
+    return redirect('/bentuk/' . $request->id_kategori_pelanggaran)
+        ->with('success', 'Bentuk pelanggaran berhasil diupdate!');
+}
 
     // simpan bentuk pelanggaran
    public function store(Request $request)

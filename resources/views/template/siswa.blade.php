@@ -61,10 +61,20 @@
         <td>{{ $row->nis }}</td>
         <td>{{ $row->kelas }}</td>
 
-        <td>
-            <a href="#" class="btn btn-warning btn-sm">Edit</a>
-            <a href="#" class="btn btn-danger btn-sm">Hapus</a>
-        </td>
+     <td>
+    <a href="{{ route('siswa.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+    <a href="{{ route('siswa.hapus', $row->id) }}"
+       onclick="return confirm('Yakin ingin menghapus?')"
+       class="btn btn-danger btn-sm">
+       Hapus
+    </a>
+    <a href="{{ route('siswa.show', $row->id) }}" class="btn btn-info btn-sm">
+    Detail
+</a>
+
+</td>
+
     </tr>
     @empty
     <tr>

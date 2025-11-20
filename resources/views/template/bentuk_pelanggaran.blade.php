@@ -27,7 +27,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold">Kategori: {{ $kategori->nama_kategori }}</h3>
 
-        <a href="{{ route('bentuk.tambah', $kategori->id) }}" class="btn btn-primary">
+        <a href="{{ route('bentuk.create', $kategori->id) }}" class="btn btn-primary">
             + Tambah Bentuk Pelanggaran
         </a>
     </div>
@@ -54,8 +54,22 @@
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $row->nama_bentuk }}</td>
                     <td>{{ $row->poin }}</td>
+               <td>
+    <div class="d-flex gap-2">
 
-                 
+        <a href="{{ route('bentuk.edit', $row->id) }}" class="btn btn-warning btn-sm">
+            Edit
+        </a>
+
+        <a href="{{ route('bentuk.delete', $row->id) }}" 
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Yakin ingin menghapus?')">
+           Hapus
+        </a>
+
+    </div>
+</td>
+
                 </tr>
                 @empty
                 <tr>

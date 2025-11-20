@@ -27,7 +27,34 @@ class SanksiPelanggaranController extends Controller
             'sanksi' => 'required',
         ]);
 
-        SanksiPelanggaran::create([
+        SanksiPelanggaran::create($request->all());
+
+        return redirect()->route('sanksi.pelanggaran')
+            ->with('success', 'Sanksi berhasil ditambahkan!');
+    }
+
+    // ================================
+    //             EDIT
+    // ================================
+    public function edit($id)
+    {
+        $sanksi = SanksiPelanggaran::findOrFail($id);
+        return view('template.edit_sanksi', compact('sanksi'));
+    }
+
+    // ================================
+    //            UPDATE
+    // ================================
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'kriteria_pelanggaran' => 'required',
+            'poin_dari' => 'required|integer',
+            'poin_sampai' => 'required|integer',
+            'sanksi' => 'required',
+        ]);
+
+        SanksiPelanggaran::where('id', $id)->update([
             'kriteria_pelanggaran' => $request->kriteria_pelanggaran,
             'poin_dari' => $request->poin_dari,
             'poin_sampai' => $request->poin_sampai,
@@ -35,6 +62,17 @@ class SanksiPelanggaranController extends Controller
         ]);
 
         return redirect()->route('sanksi.pelanggaran')
-            ->with('success', 'Sanksi berhasil ditambahkan!');
+            ->with('success', 'Data berhasil diperbarui!');
+    }
+
+    // ================================
+    //            DELETE
+    // ================================
+    public function destroy($id)
+    {
+        SanksiPelanggaran::destroy($id);
+
+        return redirect()->route('sanksi.pelanggaran')
+            ->with('success', 'Data berhasil dihapus!');
     }
 }

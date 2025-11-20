@@ -48,7 +48,8 @@
 <tr>
     <td>{{ $i+1 }}</td>
     <td>{{ $row->nama_kelas }}</td>
-    <td>0</td> <!-- sementara -->
+   <td>{{ $row->siswa_count }}</td>
+
     <td>0 Kali</td>
     <td>0</td>
     <td>
