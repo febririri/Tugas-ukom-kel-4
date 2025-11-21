@@ -136,6 +136,7 @@
 
     <a href="#" class="nav-link">Pelanggaran Siswa</a>
     <a href="{{ route('penghargaan') }}" class="nav-link active">Penghargaan</a>
+    <a href="kelas" class="nav-link">Kelas</a>
     <a href="siswa" class="nav-link">Siswa</a>
     <a href="guru" class="nav-link">Guru</a>
     
@@ -147,7 +148,7 @@
 
     <div class="topbar d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Dashboard Admin</h5>
-
+ <p>Selamat datang, {{ Auth::user()->name }}</p>
         <div class="search-box">
             <input type="text" class="form-control" placeholder="Cari Siswa...">
         </div>
@@ -220,7 +221,7 @@
     </div>
 
     <footer>
-      <p>&copy; 2025 SistemPoin | Dashboard Guru</p>
+      <p>&copy; 2025 SistemPoin | Dashboard Admin</p>
     </footer>
   </div>
 

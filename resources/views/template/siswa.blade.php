@@ -26,10 +26,9 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold">Data Siswa</h4>
-
-        <a href="{{ url('/tambah_siswa') }}" class="btn btn-primary px-4 py-2">
-            + Tambah Siswa
-        </a>
+<a href="{{ route('siswa.create', $kelas->id) }}" class="btn btn-primary">
+    + Tambah Siswa
+</a>
     </div>
 
     <div class="card card-box p-4">
@@ -45,36 +44,46 @@
                 </tr>
             </thead>
 
-            <tbody>
-                @forelse($siswa ?? [] as $i => $row)
-                <tr>
-                    <td>{{ $i + 1 }}</td>
+          <tbody>
+    @forelse($siswa as $i => $row)
+    <tr>
+        <td>{{ $i + 1 }}</td>
 
-                    <td>
-                        @if(!empty($row['foto']))
-                            <img src="{{ asset('foto_siswa/' . $row['foto']) }}" width="60" class="rounded">
-                        @else
-                            <span class="text-muted">-</span>
-                        @endif
-                    </td>
+        <td>
+            @if($row->foto)
+                <img src="{{ asset('foto_siswa/' . $row->foto) }}" width="60" class="rounded">
+            @else
+                <span class="text-muted">-</span>
+            @endif
+        </td>
 
-                    <td>{{ $row['nama'] }}</td>
-                    <td>{{ $row['nis'] }}</td>
-                    <td>{{ $row['kelas'] }}</td>
+        <td>{{ $row->nama }}</td>
+        <td>{{ $row->nis }}</td>
+        <td>{{ $row->kelas }}</td>
 
-                    <td>
-                        <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="#" class="btn btn-danger btn-sm">Hapus</a>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center text-muted">
-                        Belum ada data siswa.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
+     <td>
+    <a href="{{ route('siswa.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+    <a href="{{ route('siswa.hapus', $row->id) }}"
+       onclick="return confirm('Yakin ingin menghapus?')"
+       class="btn btn-danger btn-sm">
+       Hapus
+    </a>
+    <a href="{{ route('siswa.show', $row->id) }}" class="btn btn-info btn-sm">
+    Detail
+</a>
+
+</td>
+
+    </tr>
+    @empty
+    <tr>
+        <td colspan="6" class="text-center text-muted">
+            Belum ada data siswa.
+        </td>
+    </tr>
+    @endforelse
+</tbody>
 
         </table>
     </div>

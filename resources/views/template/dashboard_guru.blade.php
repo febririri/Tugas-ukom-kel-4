@@ -100,12 +100,22 @@
   <div class="main-content">
 
     <!-- Topbar -->
-    <div class="topbar d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Dashboard Guru</h5>
-      <div class="search-box">
-        <input type="text" class="form-control" placeholder="Cari Siswa...">
-      </div>
-    </div>
+   <div class="topbar d-flex justify-content-between align-items-center">
+
+  <h5 class="mb-0">Dashboard Guru</h5>
+
+  <h2>Halo, {{ $guru->nama }}</h2>
+
+@if($guru->foto)
+    <img src="{{ asset('foto_guru/'.$guru->foto) }}" width="120">
+@endif
+
+<p>Email: {{ $guru->email }}</p>
+<p>Role: {{ $guru->role }}</p>
+
+
+</div>
+
 
     <div class="row g-3 mb-4">
       <div class="col-md-3">

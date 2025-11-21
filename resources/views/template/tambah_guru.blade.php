@@ -26,9 +26,9 @@
     <h4 class="fw-bold mb-3">Tambah Guru</h4>
 
     <div class="card card-form p-4">
+<form action="{{ route('guru.store') }}" method="POST">
+    @csrf
 
-        <form action="{{ url('/guru/simpan') }}" method="POST" enctype="multipart/form-data">
-            @csrf
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">Nama Guru</label>
@@ -40,8 +40,7 @@
                 <input type="number" name="nip" class="form-control" required>
             </div>
 
-         
-
+       
             <div class="d-flex justify-content-between">
                 <a href="{{ url('/guru') }}" class="btn btn-secondary px-4">
                     Kembali

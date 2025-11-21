@@ -23,14 +23,17 @@
 
 <div class="container mt-4">
 
-    <a href="{{ url('/bentuk_pelanggaran/'.$kategori) }}" class="btn btn-secondary mb-3">⬅ Kembali</a>
+    {{-- Tombol kembali ke daftar bentuk --}}
+    <a href="{{ route('bentuk.index', $kategori->id) }}" class="btn btn-secondary mb-3">← Kembali</a>
 
     <div class="card card-form p-4">
-
         <h4 class="fw-bold mb-3">Tambah Bentuk Pelanggaran</h4>
 
-        <form action="{{ url('/tambah_bentuk/'.$kategori) }}" method="POST">
+        <form action="{{ route('bentuk.store') }}" method="POST">
             @csrf
+
+            {{-- WAJIB! kirim id kategori agar tidak NULL --}}
+            <input type="hidden" name="id_kategori_pelanggaran" value="{{ $kategori->id }}">
 
             <div class="mb-3">
                 <label class="form-label">Nama Bentuk Pelanggaran</label>

@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-          Schema::create('bentuk_pelanggaran', function (Blueprint $table) {
+        Schema::create('bentuk_pelanggaran', function (Blueprint $table) {
     $table->id();
-    $table->BigInteger('id_kategori_pelanggaran',false,true)->index('kategori_pelanggaranid');
-    $table->string('nama_pelanggaran',);
-    $table->integer('poin'); // poin negatif
-    $table->foreign('id_kategori_pelanggaran')->references('id')->on('kategori_pelanggaran')->onDelete('cascade');
+    $table->unsignedBigInteger('id_kategori_pelanggaran');
+    $table->string('nama_bentuk');
+    $table->integer('poin');
     $table->timestamps();
+    $table->foreign('id_kategori_pelanggaran')
+          ->references('id')
+          ->on('kategori_pelanggaran')
+          ->onDelete('cascade');
 });
+
         
     }
 

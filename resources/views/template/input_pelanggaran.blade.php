@@ -6,98 +6,6 @@
   <title>Input Pelanggaran Siswa</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<<<<<<< HEAD
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
-  <style>
-    body {
-      background-color: #f5faff;
-      font-family: "Poppins", sans-serif;
-    }
-    h1 {
-      font-weight: 700;
-      color: #0a1931;
-    }
-    p {
-      color: #5c677d;
-    }
-    .card {
-      border-radius: 15px;
-      border: 1px solid #e3eaf5;
-      background-color: #ffffff;
-    }
-    .form-control, .form-select, textarea {
-      background-color: #f2f8ff;
-      border: 1px solid #d9e4f5;
-    }
-    .form-control:focus, .form-select:focus, textarea:focus {
-      border-color: #1976d2;
-      box-shadow: 0 0 5px rgba(25, 118, 210, 0.2);
-    }
-    .upload-area {
-      border: 2px dashed #bcd2f5;
-      border-radius: 10px;
-      padding: 60px;
-      text-align: center;
-      background-color: #f5faff;
-      transition: all 0.3s ease;
-    }
-    .upload-area:hover {
-      border-color: #1976d2;
-      background-color: #e9f3ff;
-    }
-    .btn-primary {
-      background-color: #1976d2;
-      border: none;
-      font-weight: 500;
-    }
-    .btn-primary:hover {
-      background-color: #125ea8;
-    }
-    .btn-secondary {
-      background-color: #90a4ae;
-      border: none;
-    }
-    .btn-secondary:hover {
-      background-color: #78909c;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container py-5">
-    <h1 class="mb-2">Input Pelanggaran Siswa</h1>
-    <p class="mb-4">Cari siswa, pilih jenis pelanggaran, dan upload bukti</p>
-
-    <form action="#" method="POST" enctype="multipart/form-data">
-
-      <div class="card shadow-sm p-4 mb-4">
-        <h5 class="fw-semibold mb-3"><i class="bi bi-search"></i> Cari dan Pilih Siswa</h5>
-        <label class="form-label fw-semibold">Cari Siswa (Nama atau NIS)</label>
-        <input type="text" class="form-control" placeholder="Ketik nama atau NIS siswa..." required>
-      </div>
-
-      <div class="card shadow-sm p-4 mb-4">
-        <h5 class="fw-semibold mb-3">Detail Pelanggaran</h5>
-
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label fw-semibold">Tanggal Pelanggaran</label>
-            <input type="date" class="form-control" required>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label fw-semibold">Jenis Pelanggaran</label>
-            <select class="form-select" required>
-              <option value="">Pilih jenis pelanggaran</option>
-              <option value="Ringan">Ringan</option>
-              <option value="Sedang">Sedang</option>
-              <option value="Berat">Berat</option>
-            </select>
-          </div>
-        </div>
-
-=======
 
   <style>
     body {
@@ -105,7 +13,6 @@
       font-family: "Poppins", sans-serif;
     }
 
-    /* FULL LEBAR + MODERN */
     .custom-wrapper {
       max-width: 1100px;
       margin: auto;
@@ -169,27 +76,24 @@
 
   <div class="container py-5 custom-wrapper">
 
-    <!-- HEADER -->
     <div class="card-header-custom">
       Input Pelanggaran Siswa
     </div>
 
-    <!-- FORM -->
     <div class="card mt-0 shadow-sm">
-     <form action="{{ route('pelanggaran.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-
+      <form action="{{ route('pelanggaran.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
         <!-- NAMA SISWA -->
         <div class="mb-3">
           <label class="form-label fw-semibold">Nama Siswa</label>
-          <input type="text" class="form-control" placeholder="Masukkan nama siswa" required>
+          <input type="text" name="nama_siswa" class="form-control" placeholder="Cari / Masukkan nama siswa" required>
         </div>
 
         <!-- KELAS -->
         <div class="mb-3">
           <label class="form-label fw-semibold">Kelas</label>
-          <select class="form-select" required>
+          <select name="kelas" class="form-select" required>
             <option value="">Pilih kelas</option>
             <option>X</option>
             <option>XI</option>
@@ -197,76 +101,11 @@
           </select>
         </div>
 
-        <!-- JURUSAN -->
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Jurusan</label>
-          <select class="form-select" required>
-            <option value="">Pilih jurusan</option>
-            <option>RPL</option>
-            <option>TKJ</option>
-            <option>MM</option>
-            <option>AKL</option>
-            <option>OTKP</option>
-            <option>BDP</option>
-          </select>
-        </div>
-
-        <!-- JENIS PELANGGARAN -->
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Jenis Pelanggaran</label>
-          <select class="form-select" required>
-            <option value="">Pilih jenis pelanggaran</option>
-            <option>Ringan</option>
-            <option>Sedang</option>
-            <option>Berat</option>
-          </select>
-        </div>
-
         <!-- BENTUK PELANGGARAN -->
->>>>>>> 8bc1b1d15853fcf492506c1d8ad61a1fa5b6c769
         <div class="mb-3">
           <label class="form-label fw-semibold">Bentuk Pelanggaran</label>
-          <select class="form-select" required>
+          <select name="bentuk_pelanggaran" class="form-select" required>
             <option value="">Pilih bentuk pelanggaran</option>
-<<<<<<< HEAD
-            <option value="Tidak Mengikuti Upacara">Tidak Mengikuti Upacara</option>
-            <option value="Terlambat Masuk Sekolah">Terlambat Masuk Sekolah</option>
-            <option value="Berkata Kasar">Berkata Kasar</option>
-            <option value="Tidak Memakai Seragam Lengkap">Tidak Memakai Seragam Lengkap</option>
-            <option value="Meninggalkan Kelas Tanpa Izin">Meninggalkan Kelas Tanpa Izin</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Deskripsi Pelanggaran</label>
-          <textarea class="form-control" rows="4" placeholder="Jelaskan secara detail pelanggaran yang terjadi..." required></textarea>
-        </div>
-      </div>
-
-      <!-- Upload Bukti -->
-      <div class="card shadow-sm p-4 mb-4">
-        <h5 class="fw-semibold mb-3"><i class="bi bi-upload"></i> Upload Bukti Pelanggaran</h5>
-        <p class="text-muted">File Bukti (Foto/Video/Dokumen)</p>
-        <div class="upload-area mb-3">
-          <i class="bi bi-cloud-arrow-up display-5 text-primary mb-2"></i>
-          <p class="fw-semibold mb-1">Klik untuk upload file</p>
-          <p class="text-muted small mb-2">atau drag dan drop file di sini</p>
-          <input type="file" class="form-control mt-2" accept=".jpg,.jpeg,.png,.mp4,.pdf,.docx">
-          <p class="text-muted small mt-2">Format: Gambar, Video, PDF, atau Dokumen</p>
-        </div>
-      </div>
-
-      <!-- Tombol -->
-      <div class="d-flex justify-content-end">
-        <button type="reset" class="btn btn-secondary me-2">Bersihkan</button>
-        <button type="submit" class="btn btn-primary">Simpan Data Pelanggaran</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-=======
             <option>Terlambat Masuk Sekolah</option>
             <option>Tidak Mengikuti Upacara</option>
             <option>Berkata Kasar</option>
@@ -275,30 +114,21 @@
           </select>
         </div>
 
-        <!-- POIN -->
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Poin</label>
-          <input type="number" class="form-control" placeholder="Masukkan poin pelanggaran" required>
-        </div>
-
         <!-- KETERANGAN -->
         <div class="mb-3">
           <label class="form-label fw-semibold">Keterangan</label>
-          <textarea class="form-control" rows="3" placeholder="Tuliskan keterangan tambahan..." required></textarea>
+          <textarea name="keterangan" class="form-control" rows="3" placeholder="Tuliskan keterangan tambahan..." required></textarea>
         </div>
 
         <!-- UPLOAD BUKTI -->
         <div class="mb-3">
           <label class="form-label fw-semibold">Upload Bukti Pelanggaran</label>
-          <input type="file" class="form-control" accept="image/*,video/*,.pdf" required>
+          <input type="file" name="bukti" class="form-control" accept="image/*,video/*,.pdf">
         </div>
 
-        <!-- SUBMIT -->
         <button type="submit" class="btn btn-primary w-100 mt-2">Simpan Pelanggaran</button>
-
       </form>
 
-      <!-- BACK -->
       <div class="text-center mt-3">
         <a href="{{ route('dashboard.guru') }}">← Kembali ke Dashboard</a>
       </div>
@@ -306,6 +136,5 @@
     </div>
   </div>
 
->>>>>>> 8bc1b1d15853fcf492506c1d8ad61a1fa5b6c769
 </body>
 </html>
