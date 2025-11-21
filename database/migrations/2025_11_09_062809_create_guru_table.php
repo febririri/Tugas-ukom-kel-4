@@ -6,25 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('guru', function (Blueprint $table) {
-    $table->id();
-    $table->unsignedBigInteger('user_id')->nullable();
-    $table->string('nama');
-    $table->string('nip')->nullable();
-     $table->string('password')->nullable();
-    $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-    $table->timestamps();
-});
+            $table->id();
+            $table->unsignedBigInteger('user_id')->nullable()->unique(); // relasi ke users (nullable)
+            $table->string('nama');
+            $table->string('nip')->nullable();
+            $table->string('foto')->nullable(); // simpan nama file
+            $table->string('role')->default('guru');
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('guru');

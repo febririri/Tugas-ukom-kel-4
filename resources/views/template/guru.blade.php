@@ -3,80 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Guru</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            background: #f5f5f5;
-            font-family: Arial, sans-serif;
-        }
-
-        .card-box {
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.08);
-        }
-    </style>
-
+    <title>Guru</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Nama</th>
+            <th>NIP</th>
+            <th>Email</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
 
-<div class="container mt-4">
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold">Data Guru</h4>
-
-        <a href="{{ route('guru.create') }}" class="btn btn-primary">+ Tambah Guru</a>
-    </div>
-
-    <div class="card card-box p-4">
-        <table class="table table-striped table-bordered">
-            <thead class="table-primary">
-                <tr>
-                    <th>No</th>
-                    <th>Nama Guru</th>
-                    <th>NIP</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @forelse($guru as $i => $row)
-                <tr>
-                    <td>{{ $i + 1 }}</td>
-
-                    <td>{{ $row->nama }}</td>
-                    <td>{{ $row->nip }}</td>
-
-                    <td>
-                        <a href="{{ route('guru.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                        <form action="{{ route('guru.destroy', $row->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit"
-                                onclick="return confirm('Yakin ingin menghapus?')"
-                                class="btn btn-danger btn-sm">
-                                Hapus
-                            </button>
-                        </form>
-                    </td>
-
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="text-center text-muted">
-                        Belum ada data guru.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-
-        </table>
-    </div>
-</div>
+    <tbody>
+        @foreach ($gurus as $g)
+        <tr>
+            <td>{{ $g->nama }}</td>
+            <td>{{ $g->nip }}</td>
+            <td>{{ $g->user->email }}</td>
+            <td>
+                <a href="{{ route('guru.edit', $g->id) }}" class="btn btn-warning btn-sm">Edit</a>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 </body>
 </html>

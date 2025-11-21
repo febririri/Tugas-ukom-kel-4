@@ -9,6 +9,9 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SanksiPelanggaranController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardGuruController;
+use App\Http\Controllers\GuruAuthController;
 /*
 |--------------------------------------------------------------------------
 | HALAMAN UTAMA
@@ -29,23 +32,30 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
-/*
-|--------------------------------------------------------------------------
-| DASHBOARD
-|--------------------------------------------------------------------------
-*/
-Route::get('/dashboard-admin', fn() => view('template.dashboard_admin'))
-    ->middleware('auth')->name('dashboard.admin');
+// DASHBOARDS
+Route::middleware('auth')->group(function() {
+    Route::get('/admin', [DashboardController::class, 'admin'])->name('dashboard.admin')->middleware('role:admin');
+    Route::get('/guru', [DashboardController::class, 'guru'])->name('dashboard.guru')->middleware('role:guru');
+});
+Route::get('/dashboard/guru', [DashboardGuruController::class, 'index'])
+    ->name('dashboard.guru')
+    ->middleware('auth');
 
-// Dashboard
-Route::get('/dashboard-admin', function () {
-    return view('template.dashboard_admin');
-})->middleware('auth')->name('dashboard.admin');
+Route::get('/guru/dashboard', [GuruAuthController::class, 'dashboard'])
+    ->middleware('guru')
+    ->name('dashboard.guru');    
 
+// GURU CRUD (admin only)
+Route::middleware(['auth','role:admin'])->group(function() {
+    Route::get('/guru', [GuruController::class, 'index'])->name('guru.index');
+    Route::get('/guru/create', [GuruController::class, 'create'])->name('guru.create');
+    Route::post('/guru/store', [GuruController::class, 'store'])->name('guru.store');
+    Route::get('/guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
+    Route::post('/guru/{id}/update', [GuruController::class, 'update'])->name('guru.update');
+    Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
+    Route::get('/admin/guru', [GuruController::class, 'index'])->name('admin.guru.index');
 
-Route::get('/dashboard-guru', fn() => view('template.dashboard_guru'))
-    ->middleware('auth')->name('dashboard.guru');
-
+});
 
 Route::get('/penghargaan', fn() => view('template.penghargaan'))->name('penghargaan');
 
