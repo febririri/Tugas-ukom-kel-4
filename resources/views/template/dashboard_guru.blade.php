@@ -102,9 +102,7 @@
     <!-- Topbar -->
     <div class="topbar d-flex justify-content-between align-items-center">
       <h5 class="mb-0">Dashboard Guru</h5>
-      <div class="search-box">
-        <input type="text" class="form-control" placeholder="Cari Siswa...">
-      </div>
+      <!-- Search box dihapus sesuai permintaan -->
     </div>
 
     <div class="row g-3 mb-4">

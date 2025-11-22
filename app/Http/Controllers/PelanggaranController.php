@@ -2,72 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pelanggaran;
-use App\Models\History;
 use Illuminate\Http\Request;
+use App\Models\Pelanggaran;
+use App\Models\Siswa;
 
 class PelanggaranController extends Controller
 {
-    // Tampilkan halaman history
+    // Halaman history tabel pelanggaran (hanya tabel!)
     public function index()
     {
-        // Ambil data dari tabel history
-        $data = History::latest()->get();
+        $data = Pelanggaran::with('siswa')->get();
         return view('history_pelanggaran', compact('data'));
     }
 
-    // Form input pelanggaran
+    // Halaman input pelanggaran (form)
     public function create()
     {
-        return view('template.input_pelanggaran');
+        $siswa = Siswa::all();
+        return view('template.input_pelanggaran', compact('siswa'));
     }
 
-    // Simpan pelanggaran + history
+    // Simpan data pelanggaran siswa
     public function store(Request $request)
     {
         $request->validate([
-            'nama_siswa' => 'required',
+            'siswa_id' => 'required',
             'kelas' => 'required',
-            'jurusan' => 'required',
-            'jenis_pelanggaran' => 'required',
             'bentuk_pelanggaran' => 'required',
-            'poin' => 'required|integer',
-            'bukti' => 'nullable|file|max:5000'
+            'keterangan' => 'nullable',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,mp4,pdf|max:2048',
         ]);
 
-        $fileName = null;
+        $data = $request->all();
 
-        // Upload gambar bukti
         if ($request->hasFile('bukti')) {
-            $fileName = time() . '_' . $request->bukti->getClientOriginalName();
-            $request->bukti->storeAs('bukti', $fileName, 'public');
+            $data['bukti'] = $request->file('bukti')->store('pelanggaran_bukti', 'public');
         }
 
-        // 🔵 Simpan ke tabel pelanggaran
-        Pelanggaran::create([
-            'nama_siswa' => $request->nama_siswa,
-            'kelas' => $request->kelas,
-            'jurusan' => $request->jurusan,
-            'jenis_pelanggaran' => $request->jenis_pelanggaran,
-            'bentuk_pelanggaran' => $request->bentuk_pelanggaran,
-            'poin' => $request->poin,
-            'keterangan' => $request->keterangan,
-            'bukti' => $fileName
+        Pelanggaran::create($data);
+
+        return redirect()->route('history.pelanggaran')->with('pesan_sukses', 'Berhasil menyimpan pelanggaran siswa');
+    }
+
+    // Halaman edit data pelanggaran siswa
+    public function edit($id)
+    {
+        $pelanggaran = Pelanggaran::findOrFail($id);
+        $siswas = Siswa::all();
+        return view('template.edit_pelanggaran', compact('pelanggaran', 'siswas'));
+    }
+
+    // Update data pelanggaran siswa setelah edit
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'siswa_id' => 'required',
+            'kelas' => 'required',
+            'bentuk_pelanggaran' => 'required',
+            'keterangan' => 'nullable',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,mp4,pdf|max:2048',
         ]);
 
-        // 🔵 Simpan juga ke tabel history
-        History::create([
-            'nama_siswa' => $request->nama_siswa,
-            'kelas' => $request->kelas,
-            'jurusan' => $request->jurusan,
-            'jenis_pelanggaran' => $request->jenis_pelanggaran,
-            'bentuk_pelanggaran' => $request->bentuk_pelanggaran,
-            'poin' => $request->poin,
-            'keterangan' => $request->keterangan,
-            'bukti' => $fileName
-        ]);
+        $pelanggaran = Pelanggaran::findOrFail($id);
 
-        return redirect()->route('history.pelanggaran')
-            ->with('success', 'Pelanggaran berhasil disimpan!');
+        $data = $request->all();
+
+        if ($request->hasFile('bukti')) {
+            $data['bukti'] = $request->file('bukti')->store('pelanggaran_bukti', 'public');
+        }
+
+        $pelanggaran->update($data);
+
+        return redirect()->route('history.pelanggaran')->with('pesan_sukses', 'Berhasil mengupdate pelanggaran siswa');
+    }
+
+    // Hapus data pelanggaran siswa
+    public function destroy($id)
+    {
+        Pelanggaran::findOrFail($id)->delete();
+        return redirect()->route('history.pelanggaran')->with('pesan_sukses', 'Berhasil menghapus data pelanggaran');
     }
 }
