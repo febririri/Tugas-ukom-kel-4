@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\Guru;
 
 class SiswaController extends Controller
 {
@@ -102,20 +103,31 @@ class SiswaController extends Controller
 
     // DASHBOARD GURU TAMBAHAN
     public function dashboardGuru()
-    {
-        $siswas = Siswa::with('pelanggaran')->get();
-        foreach ($siswas as $siswa) {
-            $siswa->pelanggaran_sum = $siswa->pelanggaran->count();
-        }
-        $topPelanggaran = [
-            'Tidak Memasukkan Baju – 5x',
-            'Meninggalkan Kelas Tanpa Izin – 3x',
-            'Tidak Mengikuti Upacara – 2x',
-            'Berkata Kotor ke Guru – 2x',
-            'Tidak Mengikuti Pelajaran – 2x',
-        ];
-        $grafikLabels = ['Jan','Feb','Mar','Apr','Mei','Jun'];
-        $grafikData = [30,45,28,60,40,70];
-        return view('template.dashboard_guru', compact('siswas', 'topPelanggaran', 'grafikLabels', 'grafikData'));
+{
+    $user = auth()->user(); 
+    $guru = Guru::where('user_id', $user->id)->first();
+
+    $siswas = Siswa::with('pelanggaran')->get();
+
+    foreach ($siswas as $siswa) {
+        $siswa->pelanggaran_sum = $siswa->pelanggaran->count();
     }
+
+    $topPelanggaran = [
+        'Tidak Memasukkan Baju – 5x',
+        'Meninggalkan Kelas Tanpa Izin – 3x',
+        'Tidak Mengikuti Upacara – 2x',
+        'Berkata Kotor ke Guru – 2x',
+        'Tidak Mengikuti Pelajaran – 2x',
+    ];
+
+    $grafikLabels = ['Jan','Feb','Mar','Apr','Mei','Jun'];
+    $grafikData = [30,45,28,60,40,70];
+
+    return view('template.dashboard_guru', compact(
+        'siswas', 'guru', 'user',
+        'topPelanggaran', 'grafikLabels', 'grafikData'
+    ));
+}
+
 }

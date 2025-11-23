@@ -23,4 +23,6 @@ class Siswa extends Model
     {
         return $this->hasMany(\App\Models\Pelanggaran::class, 'siswa_id');
     }
+
+    
 }

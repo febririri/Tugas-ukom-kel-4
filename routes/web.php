@@ -48,15 +48,8 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('role:guru');
 });
 
-// Dashboard admin template
-Route::get('/dashboard-admin', fn() => view('template.dashboard_admin'))
-    ->middleware('auth')
-    ->name('dashboard.admin');
 
-// Dashboard guru utama
-Route::get('/dashboard-guru', [SiswaController::class, 'dashboardGuru'])
-    ->middleware('auth')
-    ->name('dashboard.guru');
+
 
 // History pelanggaran per siswa
 Route::get('/dashboard-guru/pelanggaran/{siswa_id}', [PelanggaranController::class, 'historySiswa'])

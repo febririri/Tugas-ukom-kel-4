@@ -8,7 +8,7 @@ use App\Models\Guru;
 
 class DashboardGuruController extends Controller
 {
-   public function index()
+ public function index()
 {
     $user = Auth::user();
 
@@ -16,14 +16,42 @@ class DashboardGuruController extends Controller
         abort(403, 'Anda bukan guru');
     }
 
-    $guru = $user->guru; // otomatis dari relasi
+    $guru = $user->guru;
 
     if (!$guru) {
         abort(403, 'Data guru tidak ditemukan');
     }
 
-    return view('template.dashboard_guru', compact('guru', 'user'));
+    // DATA SISWA + JUMLAH PELANGGARAN
+    $siswas = \App\Models\Siswa::with('pelanggaran')->get();
+
+    foreach ($siswas as $siswa) {
+        $siswa->pelanggaran_sum = $siswa->pelanggaran->count();
+    }
+
+    // DATA TOP PELANGGARAN
+    $topPelanggaran = [
+        'Tidak Memasukkan Baju – 5x',
+        'Meninggalkan Kelas Tanpa Izin – 3x',
+        'Tidak Mengikuti Upacara – 2x',
+        'Berkata Kotor ke Guru – 2x',
+        'Tidak Mengikuti Pelajaran – 2x',
+    ];
+
+    // DATA GRAFIK
+    $grafikLabels = ['Jan','Feb','Mar','Apr','Mei','Jun'];
+    $grafikData = [30,45,28,60,40,70];
+
+    return view('template.dashboard_guru', compact(
+        'guru',
+        'user',
+        'siswas',
+        'topPelanggaran',
+        'grafikLabels',
+        'grafikData'
+    ));
 }
+
 
 
 }

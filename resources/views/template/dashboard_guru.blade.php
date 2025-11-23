@@ -134,74 +134,58 @@
 
 </div>
 
-    <div class="row g-3 mb-4">
-      <div class="col-md-3">
-        <div class="card p-3 text-center">
-          <h6 class="fw-semibold mb-1">Salsabila Ayu</h6>
-          <p class="text-muted mb-1">X TKJ</p>
-          <h3 class="text-danger fw-bold mb-2">65</h3>
-          <p class="text-muted">Poin Pelanggaran</p>
-          <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
-        </div>
-      </div>
+ <div class="row g-3 mb-4">
 
-      <div class="col-md-3">
-        <div class="card p-3 text-center">
-          <h6 class="fw-semibold mb-1">Gio Sanjaya</h6>
-          <p class="text-muted mb-1">X RPL</p>
-          <h3 class="text-danger fw-bold mb-2">60</h3>
-          <p class="text-muted">Poin Pelanggaran</p>
-          <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
-        </div>
-      </div>
+    @foreach($siswas as $siswa)
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card p-3 text-center">
+                <h6 class="fw-semibold mb-1">{{ $siswa->nama }}</h6>
+                <p class="text-muted mb-1">{{ $siswa->kelas }}</p>
 
-      <div class="col-md-3">
-        <div class="card p-3 text-center">
-          <h6 class="fw-semibold mb-1">Rafi Santoso</h6>
-          <p class="text-muted mb-1">X RPL</p>
-          <h3 class="text-danger fw-bold mb-2">50</h3>
-          <p class="text-muted">Poin Pelanggaran</p>
-          <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
-        </div>
-      </div>
+                <h3 class="text-danger fw-bold mb-2">
+                    {{ $siswa->pelanggaran_sum ?? 0 }}
+                </h3>
+                <p class="text-muted">Poin Pelanggaran</p>
 
-      <div class="col-md-3">
-        <div class="card p-3 text-center">
-          <h6 class="fw-semibold mb-1">Muhammad Ali</h6>
-          <p class="text-muted mb-1">X TKR</p>
-          <h3 class="text-danger fw-bold mb-2">35</h3>
-          <p class="text-muted">Poin Pelanggaran</p>
-          <button class="btn btn-primary btn-sm">Lihat Pelanggaran</button>
+                <a href="{{ route('dashboard.guru.pelanggaran', $siswa->id) }}" 
+                   class="btn btn-primary btn-sm">
+                    Lihat Pelanggaran
+                </a>
+            </div>
         </div>
-      </div>
+    @endforeach
+
+</div>
+
+
+<!-- Top 5 Pelanggaran + Grafik -->
+<div class="row g-3">
+
+    <!-- TOP 5 -->
+    <div class="col-12 col-lg-6">
+        <div class="card p-3 h-100">
+            <h5>Top 5 Pelanggaran</h5>
+            <ul class="mt-3 mb-0">
+                @foreach($topPelanggaran as $pelanggaran)
+                    <li>{{ $pelanggaran }}</li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 
-    <div class="row g-3">
-      <div class="col-md-6">
-        <div class="card p-3">
-          <h5>Top 5 Pelanggaran</h5>
-          <ul class="mt-3 mb-0">
-            <li>Tidak Memasukkan Baju – 5x</li>
-            <li>Meninggalkan Kelas Tanpa Izin – 3x</li>
-            <li>Tidak Mengikuti Upacara – 2x</li>
-            <li>Berkata Kotor ke Guru – 2x</li>
-            <li>Tidak Mengikuti Pelajaran – 2x</li>
-          </ul>
+    <!-- GRAFIK -->
+    <div class="col-12 col-lg-6">
+        <div class="card p-3 h-100">
+            <h5>Grafik Pelanggaran per Jurusan</h5>
+            <canvas id="grafikPelanggaran" height="160"></canvas>
         </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="card p-3">
-          <h5>Grafik Pelanggaran per Jurusan</h5>
-          <canvas id="grafikPelanggaran" height="160"></canvas>
-        </div>
-      </div>
     </div>
 
-    <footer>
-      <p>&copy; 2025 SistemPoin | Dashboard Guru</p>
-    </footer>
-  </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 SistemPoin | Dashboard Guru</p>
+</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
