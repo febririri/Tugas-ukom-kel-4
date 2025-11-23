@@ -54,9 +54,14 @@
                     <a href="{{ route('input.pelanggaran') }}" class="btn btn-primary me-2">
                         + Input Pelanggaran
                     </a>
-                    <a href="#" class="btn btn-danger">Cetak Pelanggaran</a>
+                    <!-- Tombol cetak update: langsung ke route cetak PDF -->
+                    <a href="{{ route('pelanggaran.cetak') }}" class="btn btn-danger">Cetak Pelanggaran</a>
                 </div>
             </div>
+
+            @if(session('pesan_sukses'))
+                <div class="alert alert-success">{{ session('pesan_sukses') }}</div>
+            @endif
 
             <table class="table table-bordered table-striped">
                 <thead>
@@ -66,6 +71,7 @@
                         <th>Kelas</th>
                         <th>Bentuk Pelanggaran</th>
                         <th>Bukti</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,10 +88,19 @@
                                     -
                                 @endif
                             </td>
+                            <td>
+                                <a href="{{ route('pelanggaran.show', $item->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                <a href="{{ route('pelanggaran.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('pelanggaran.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Belum ada data pelanggaran</td>
+                            <td colspan="6" class="text-center text-muted">Belum ada data pelanggaran</td>
                         </tr>
                     @endforelse
                 </tbody>

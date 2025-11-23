@@ -14,18 +14,24 @@ use App\Http\Controllers\KelasController;
 | HALAMAN UTAMA & LOGIN
 |--------------------------------------------------------------------------
 */
-
 Route::get('/', fn() => view('index'));
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
 /*
 |--------------------------------------------------------------------------
-| DASHBOARD
+| DASHBOARD & DASHBOARD GURU DETAIL PELANGGARAN
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard-admin', fn() => view('template.dashboard_admin'))->middleware('auth')->name('dashboard.admin');
-Route::get('/dashboard-guru', fn() => view('template.dashboard_guru'))->middleware('auth')->name('dashboard.guru');
+
+// Dashboard Guru (utama)
+Route::get('/dashboard-guru', [SiswaController::class, 'dashboardGuru'])->middleware('auth')->name('dashboard.guru');
+
+// Route untuk tombol "Lihat Pelanggaran" per siswa di dashboard guru
+Route::get('/dashboard-guru/pelanggaran/{siswa_id}', [PelanggaranController::class, 'historySiswa'])
+    ->middleware('auth')->name('dashboard.guru.pelanggaran');
+
 Route::get('/penghargaan', fn() => view('template.penghargaan'))->name('penghargaan');
 
 /*
@@ -111,32 +117,20 @@ Route::get('/kelas/print/{id}', [KelasController::class, 'print'])->name('kelas.
 
 /*
 |--------------------------------------------------------------------------
-| BACKEND PELANGGARAN CRUD (tanpa "s")
+| BACKEND PELANGGARAN CRUD (PAKAI RESOURCE)
 |--------------------------------------------------------------------------
 */
-// FORM Input Pelanggaran
+Route::resource('pelanggaran', PelanggaranController::class)->middleware('auth');
 Route::get('/input-pelanggaran', [PelanggaranController::class, 'create'])->name('input.pelanggaran')->middleware('auth');
-
-// Simpan Pelanggaran
-Route::post('/input-pelanggaran/store', [PelanggaranController::class, 'store'])->name('pelanggaran.store')->middleware('auth');
-
-// History Pelanggaran & Tabel CRUD
 Route::get('/history/pelanggaran', [PelanggaranController::class, 'index'])->name('history.pelanggaran')->middleware('auth');
 
-// Edit pelanggaran tampil form edit
-Route::get('/history/pelanggaran/{id}/edit', [PelanggaranController::class, 'edit'])->name('pelanggaran.edit')->middleware('auth');
-
-// Update pelanggaran
-Route::post('/history/pelanggaran/{id}/update', [PelanggaranController::class, 'update'])->name('pelanggaran.update')->middleware('auth');
-
-// Delete pelanggaran
-Route::post('/history/pelanggaran/{id}/delete', [PelanggaranController::class, 'destroy'])->name('pelanggaran.destroy')->middleware('auth');
+// ROUTE CETAK PELANGGARAN PDF
+Route::get('/pelanggaran/cetak', [PelanggaranController::class, 'cetakPDF'])->name('pelanggaran.cetak')->middleware('auth');
 
 /*
 |--------------------------------------------------------------------------
 | HISTORY & LOGOUT
 |--------------------------------------------------------------------------
 */
-
 Route::get('/history/penghargaan', fn() => view('history_penghargaan'))->name('history.penghargaan')->middleware('auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
