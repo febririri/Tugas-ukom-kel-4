@@ -22,6 +22,7 @@
         <input type="number" name="poin" value="{{ $bentuk->poin }}" class="form-control">
     </div>
 
+
     <button class="btn btn-success">Update</button>
     <a href="/bentuk/{{ $kategori->id }}" class="btn btn-secondary">Batal</a>
 </form>

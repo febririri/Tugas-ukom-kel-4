@@ -49,6 +49,10 @@
             </div>
 
             <button type="submit" class="btn btn-success">✔ Simpan</button>
+            <a href="{{ route('sanksi.pelanggaran') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
+
 
         </form>
 

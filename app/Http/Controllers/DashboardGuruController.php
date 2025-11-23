@@ -8,11 +8,22 @@ use App\Models\Guru;
 
 class DashboardGuruController extends Controller
 {
-    public function index()
-    {
-        $user = Auth::user();
-        $guru = Guru::where('user_id', $user->id)->first();
+   public function index()
+{
+    $user = Auth::user();
 
-        return view('template.dashboard_guru', compact('user', 'guru'));
+    if ($user->role !== 'guru') {
+        abort(403, 'Anda bukan guru');
     }
+
+    $guru = $user->guru; // otomatis dari relasi
+
+    if (!$guru) {
+        abort(403, 'Data guru tidak ditemukan');
+    }
+
+    return view('template.dashboard_guru', compact('guru', 'user'));
+}
+
+
 }

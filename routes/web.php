@@ -11,17 +11,15 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardGuruController;
-use App\Http\Controllers\GuruAuthController;
+
+
 /*
 |--------------------------------------------------------------------------
 | HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
-// Halaman utama
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', fn() => view('index'));
 
 
 /*
@@ -29,87 +27,85 @@ Route::get('/', function () {
 | LOGIN
 |--------------------------------------------------------------------------
 */
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
-// DASHBOARDS
-Route::middleware('auth')->group(function() {
-    Route::get('/admin', [DashboardController::class, 'admin'])->name('dashboard.admin')->middleware('role:admin');
-    Route::get('/guru', [DashboardController::class, 'guru'])->name('dashboard.guru')->middleware('role:guru');
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->group(function () {
+
+    // ADMIN DASHBOARD
+    Route::get('/admin/dashboard', [DashboardController::class, 'admin'])
+        ->name('dashboard.admin')
+        ->middleware('role:admin');
+
+    // GURU DASHBOARD
+    Route::get('/guru/dashboard', [DashboardGuruController::class, 'index'])
+        ->name('dashboard.guru')
+        ->middleware('role:guru');
 });
-Route::get('/dashboard/guru', [DashboardGuruController::class, 'index'])
-    ->name('dashboard.guru')
-    ->middleware('auth');
 
-Route::get('/guru/dashboard', [GuruAuthController::class, 'dashboard'])
-    ->middleware('guru')
-    ->name('dashboard.guru');    
 
-// GURU CRUD (admin only)
-Route::middleware(['auth','role:admin'])->group(function() {
+/*
+|--------------------------------------------------------------------------
+| GURU CRUD (ADMIN)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth','role:admin'])->prefix('admin')->group(function () {
+
     Route::get('/guru', [GuruController::class, 'index'])->name('guru.index');
     Route::get('/guru/create', [GuruController::class, 'create'])->name('guru.create');
     Route::post('/guru/store', [GuruController::class, 'store'])->name('guru.store');
     Route::get('/guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
     Route::post('/guru/{id}/update', [GuruController::class, 'update'])->name('guru.update');
     Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
-    Route::get('/admin/guru', [GuruController::class, 'index'])->name('admin.guru.index');
-
 });
-
-Route::get('/penghargaan', fn() => view('template.penghargaan'))->name('penghargaan');
 
 
 /*
 |--------------------------------------------------------------------------
-| KATEGORI PELANGGARAN (JSON)
+| KATEGORI PELANGGARAN
 |--------------------------------------------------------------------------
 */
-// Halaman utama kategori pelanggaran (ambil dari database)
+
+// LIST KATEGORI
 Route::get('/kategori_pelanggaran', [KategoriController::class, 'index'])
     ->name('kategori.pelanggaran');
 
-
-// Simpan kategori baru ke database
+// TAMBAH DATA
 Route::post('/kategori/tambah', [KategoriController::class, 'store'])
     ->name('kategori.simpan');
 
-// Hapus kategori
+// HAPUS
 Route::get('/hapus_kategori/{id}', [KategoriController::class, 'destroy'])
     ->name('kategori.hapus');
 
-
-// Edit kategori (tampilkan form)
+// EDIT FORM
 Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])
     ->name('kategori.edit');
 
-// Update kategori
+// UPDATE
 Route::post('/kategori/update/{id}', [KategoriController::class, 'update'])
     ->name('kategori.update');
+
+
 /*
 |--------------------------------------------------------------------------
-| BENTUK PELANGGARAN (DATABASE)
+| BENTUK PELANGGARAN
 |--------------------------------------------------------------------------
 */
 
-// tampil daftar bentuk
 Route::get('/bentuk/{id}', [BentukController::class, 'index'])->name('bentuk.index');
-
-// form tambah
 Route::get('/bentuk/tambah/{id}', [BentukController::class, 'create'])->name('bentuk.create');
-
-// simpan bentuk
 Route::post('/bentuk/store', [BentukController::class, 'store'])->name('bentuk.store');
-
-// form edit
 Route::get('/bentuk/edit/{id}', [BentukController::class, 'edit'])->name('bentuk.edit');
-
-// update bentuk
 Route::post('/bentuk/update/{id}', [BentukController::class, 'update'])->name('bentuk.update');
-
-// hapus bentuk
 Route::get('/bentuk/hapus/{id}', [BentukController::class, 'destroy'])->name('bentuk.delete');
-
 
 
 /*
@@ -117,27 +113,24 @@ Route::get('/bentuk/hapus/{id}', [BentukController::class, 'destroy'])->name('be
 | SANKSI PELANGGARAN
 |--------------------------------------------------------------------------
 */
-/// HALAMAN LIST
+
+Route::get('/sanksi', [SanksiPelanggaranController::class, 'viewSanksi'])->name('sanksi');
+
 Route::get('/sanksi_pelanggaran', [SanksiPelanggaranController::class, 'index'])
     ->name('sanksi.pelanggaran');
 
-// FORM TAMBAH
 Route::get('/sanksi/tambah', [SanksiPelanggaranController::class, 'create'])
     ->name('sanksi.tambah');
 
-// SIMPAN DATA
 Route::post('/sanksi/simpan', [SanksiPelanggaranController::class, 'store'])
     ->name('sanksi.simpan');
 
-// FORM EDIT
 Route::get('/sanksi/edit/{id}', [SanksiPelanggaranController::class, 'edit'])
     ->name('sanksi.edit');
 
-// UPDATE DATA
 Route::post('/sanksi/update/{id}', [SanksiPelanggaranController::class, 'update'])
     ->name('sanksi.update');
 
-// HAPUS DATA
 Route::get('/sanksi/hapus/{id}', [SanksiPelanggaranController::class, 'destroy'])
     ->name('sanksi.hapus');
 
@@ -148,105 +141,67 @@ Route::get('/sanksi/hapus/{id}', [SanksiPelanggaranController::class, 'destroy']
 |--------------------------------------------------------------------------
 */
 
+Route::get('/kelas/{id}/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
+Route::post('/kelas/{id}/siswa/simpan', [SiswaController::class, 'store'])->name('kelas.siswa.simpan');
+Route::get('/kelas/{id}/siswa', [KelasController::class, 'lihatSiswa'])->name('kelas.siswa');
+Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit'])->name('siswa.edit');
+Route::post('/siswa/update/{id}', [SiswaController::class, 'update'])->name('siswa.update');
+Route::get('/siswa/hapus/{id}', [SiswaController::class, 'destroy'])->name('siswa.hapus');
+Route::get('/siswa/detail/{id}', [SiswaController::class, 'show'])->name('siswa.show');
 
 
-
-// Tambah siswa
-Route::get('/kelas/{id}/siswa/create', [SiswaController::class, 'create'])
-    ->name('siswa.create');
-
-// Simpan siswa
-Route::post('/kelas/{id}/siswa/simpan', [SiswaController::class, 'store'])
-    ->name('kelas.siswa.simpan');
-
-// Lihat siswa
-Route::get('/kelas/{id}/siswa', [KelasController::class, 'lihatSiswa'])
-    ->name('kelas.siswa');
-
-// Edit siswa
-Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit'])
-    ->name('siswa.edit');
-
-// Update siswa
-Route::post('/siswa/update/{id}', [SiswaController::class, 'update'])
-    ->name('siswa.update');
-
-// Hapus siswa
-Route::get('/siswa/hapus/{id}', [SiswaController::class, 'destroy'])
-    ->name('siswa.hapus');
-
-Route::get('/siswa/detail/{id}', [SiswaController::class, 'show'])
-    ->name('siswa.show');
-
-/// daftar guru
-Route::get('/guru', [GuruController::class, 'index'])->name('guru.index');
-
-// create + store
-Route::get('/guru/create', [GuruController::class, 'create'])->name('guru.create');
-Route::post('/guru/store', [GuruController::class, 'store'])->name('guru.store');
-
-// show
-Route::get('/guru/{id}', [GuruController::class, 'show'])->name('guru.show');
-
-// edit + update
-Route::get('/guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
-Route::post('/guru/{id}/update', [GuruController::class, 'update'])->name('guru.update');
-
-// hapus
-Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
 /*
 |--------------------------------------------------------------------------
 | DATA KELAS
 |--------------------------------------------------------------------------
 */
+
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
-
 Route::post('/kelas/simpan', [KelasController::class, 'simpan'])->name('kelas.simpan');
-
 Route::get('/kelas/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
-
 Route::post('/kelas/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
-
 Route::get('/kelas/hapus/{id}', [KelasController::class, 'hapus'])->name('kelas.hapus');
-
-// Lihat siswa berdasarkan kelas
 Route::get('/kelas/{id}/siswa', [KelasController::class, 'lihatSiswa'])->name('kelas.siswa');
-
-// Print kelas
 Route::get('/kelas/print/{id}', [KelasController::class, 'print'])->name('kelas.print');
 
 
+/*
+|--------------------------------------------------------------------------
+| EKA & ICHA (TIDAK DIUBAH)
+|--------------------------------------------------------------------------
+*/
 
-//EKA DAN ICHA (GURU)
 Route::view('/penghargaan', 'template.penghargaan')->middleware('auth')->name('penghargaan');
 Route::view('/sanksi', 'template.sanksi')->middleware('auth')->name('sanksi');
 
 
+/*
+|--------------------------------------------------------------------------
+| BACKEND PELANGGARAN
+|--------------------------------------------------------------------------
+*/
 
-// ============================================
-// BACKEND PELANGGARAN
-// ============================================
-
-// FORM Input Pelanggaran
 Route::get('/input-pelanggaran', [PelanggaranController::class, 'create'])
     ->name('input.pelanggaran')
     ->middleware('auth');
 
-// Simpan Pelanggaran
 Route::post('/input-pelanggaran/store', [PelanggaranController::class, 'store'])
     ->name('pelanggaran.store')
     ->middleware('auth');
 
-// History Pelanggaran
 Route::get('/history/pelanggaran', [PelanggaranController::class, 'index'])
     ->name('history.pelanggaran')
     ->middleware('auth');
 
-
-// MINI SIDEBAR — History Penghargaan
-Route::get('/history/penghargaan', function () {
-    return view('history_penghargaan');
-})->name('history.penghargaan')->middleware('auth');
+Route::get('/history/penghargaan', fn() => view('history_penghargaan'))
+    ->name('history.penghargaan')
+    ->middleware('auth');
 
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+/*
+|--------------------------------------------------------------------------
+| LOGOUT
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

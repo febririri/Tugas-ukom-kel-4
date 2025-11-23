@@ -10,15 +10,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // =====================
-        // 1. SEEDER AKUN ADMIN
-        // =====================
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('123456'),
-            'role' => 'admin',
-        ]);
+        
 
         // =====================
         // 2. SEEDER AKUN GURU

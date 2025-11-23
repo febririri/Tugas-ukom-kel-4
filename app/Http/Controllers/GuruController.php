@@ -6,101 +6,92 @@ use Illuminate\Http\Request;
 use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class GuruController extends Controller
 {
-  public function index()
-{
-    $gurus = Guru::with('user')->get();
-    return view('admin.guru.index', compact('gurus'));
-}
+    public function index()
+    {
+        $gurus = Guru::all();
+        return view('template.guru', compact('gurus'));
+    }
 
 
     public function create()
     {
-        return view('guru.create');
+        return view('template.tambah_guru');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'nip'  => 'nullable',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'foto' => 'nullable|image|max:2048',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'nama' => 'required',
+        'nip'  => 'nullable',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6'
+    ]);
 
-        // buat user
-        $user = User::create([
-            'name' => $request->nama,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'guru',
-        ]);
+    // 1. SIMPAN USER DULU
+    $user = \App\Models\User::create([
+        'name' => $request->nama,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role' => 'guru'
+    ]);
 
-        $fotoName = null;
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $fotoName = time().'_'.Str::slug($request->nama).'_'.$file->getClientOriginalName();
-            $file->move(public_path('foto_guru'), $fotoName);
-        }
+    // 2. SIMPAN DATA GURU
+    Guru::create([
+        'user_id' => $user->id,
+        'nama' => $request->nama,
+        'nip'  => $request->nip,
+        'plain_password' => $request->password
+    ]);
 
-        Guru::create([
-            'user_id' => $user->id,
-            'nama' => $request->nama,
-            'nip'  => $request->nip,
-            'foto' => $fotoName,
-        ]);
-
-        return redirect()->route('guru.index')->with('success','Guru berhasil ditambahkan');
-    }
+    return redirect()->route('guru.index')->with('success','Guru baru berhasil dibuat');
+}
 
     public function edit($id)
     {
         $guru = Guru::findOrFail($id);
-        return view('guru.edit', compact('guru'));
+        return view('template.edit_guru', compact('guru'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $guru = Guru::findOrFail($id);
+ public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama' => 'required',
+        'nip'  => 'nullable',
+        'email' => 'required|email',
+        'password' => 'nullable'
+    ]);
 
-        $request->validate([
-            'nama' => 'required',
-            'nip'  => 'nullable',
-            'foto' => 'nullable|image|max:2048',
-        ]);
+    $guru = Guru::findOrFail($id);
+    $user = $guru->user;
 
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $fotoName = time().'_'. $file->getClientOriginalName();
-            $file->move(public_path('foto_guru'), $fotoName);
-            $guru->foto = $fotoName;
-        }
+    // update user
+    $user->email = $request->email;
+    $user->name  = $request->nama;
 
-        $guru->nama = $request->nama;
-        $guru->nip = $request->nip;
-        $guru->save();
-
-        // sync name to user (optional)
-        if ($guru->user) {
-            $guru->user->name = $request->nama;
-            $guru->user->save();
-        }
-
-        return redirect()->route('guru.index')->with('success','Data guru diperbarui');
+    if ($request->password) {
+        $user->password = bcrypt($request->password);
+        $guru->plain_password = $request->password;
     }
+
+    $user->save();
+
+    // update guru
+    $guru->nama = $request->nama;
+    $guru->nip  = $request->nip;
+    $guru->save();
+
+    return redirect()->route('guru.index')->with('success','Data guru diperbarui');
+}
+
 
     public function destroy($id)
     {
         $guru = Guru::findOrFail($id);
-        if ($guru->user) {
-            $guru->user->delete(); // hapus user juga (opsional)
-        } else {
-            $guru->delete();
-        }
+        $guru->delete();
+
         return redirect()->route('guru.index')->with('success','Guru dihapus');
     }
 }

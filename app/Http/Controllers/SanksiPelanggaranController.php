@@ -8,10 +8,21 @@ use App\Models\SanksiPelanggaran;
 class SanksiPelanggaranController extends Controller
 {
     public function index()
-    {
-        $sanksi = SanksiPelanggaran::all();
+{
+    $sanksi = SanksiPelanggaran::all();
+
+    // Ambil role user yang login
+    $role = auth()->user()->role;
+
+    if ($role == 'admin') {
+        // Admin bisa tambah/edit/hapus
         return view('template.sanksi_pelanggaran', compact('sanksi'));
+    } else {
+        // Guru/user lain hanya lihat read-only
+        return view('template.sanksi', compact('sanksi'));
     }
+}
+
 
     public function create()
     {

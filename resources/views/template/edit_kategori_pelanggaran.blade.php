@@ -15,6 +15,9 @@
         </div>
 
         <button type="submit" class="btn btn-success">Update</button>
+        <a href="{{ route('kategori.pelanggaran') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
     </form>
 </div>
 @endsection

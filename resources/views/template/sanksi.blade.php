@@ -80,35 +80,55 @@
             <tr>
               <th>No</th>
               <th>Kriteria Pelanggaran</th>
-              <th>Bobot</th>
+              <th>Poin</th>
               <th>Opsi</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Pelanggaran Ringan</td>
-              <td>1 - 5</td>
-              <td><button class="btn btn-primary btn-sm">Lihat Sanksi</button></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Pelanggaran Sedang</td>
-              <td>6 - 20</td>
-              <td><button class="btn btn-primary btn-sm">Lihat Sanksi</button></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Pelanggaran Berat</td>
-              <td>50 - 100</td>
-              <td><button class="btn btn-primary btn-sm">Lihat Sanksi</button></td>
-            </tr>
-          </tbody>
+        <tbody>
+                @forelse($sanksi as $row)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $row->kriteria_pelanggaran }}</td>
+                        <td>{{ $row->poin_dari }} - {{ $row->poin_sampai }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalSanksi{{ $row->id }}">
+                                Lihat Sanksi
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Modal Lihat Sanksi -->
+                    <div class="modal fade" id="modalSanksi{{ $row->id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">Sanksi & Pembinaan - {{ $row->kriteria_pelanggaran }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><b>Bobot Pelanggaran:</b> {{ $row->poin_dari }} - {{ $row->poin_sampai }}</p>
+                                    <b>Sanksi:</b>
+                                    <div class="mt-2">{!! nl2br(e($row->sanksi)) !!}</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">Belum ada data sanksi pelanggaran.</td>
+                    </tr>
+                @endforelse
+            </tbody>
         </table>
       </div>
     </div>
 
-    <a href="/dashboard" class="back-btn">← Kembali ke Dashboard</a>
+  <a href="{{ route('dashboard.guru') }}" class="back-btn">
+    ← Kembali
+</a>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

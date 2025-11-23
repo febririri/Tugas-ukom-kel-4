@@ -22,6 +22,10 @@
         <h3 class="fw-bold">Sanksi Pelanggaran</h3>
         <a href="{{ route('sanksi.tambah') }}" class="btn btn-primary">+ Tambah Sanksi Pelanggaran</a>
     </div>
+<a href="{{ route('dashboard.admin') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
+
 
     <div class="card card-kategori p-3">
         <table class="table align-middle table-striped">

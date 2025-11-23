@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EnsureRole
 {
-    public function handle($request, Closure $next, ...$roles)
+    public function handle($request, Closure $next, ...$role)
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('/login');
         }
 
         $user = Auth::user();
-        if (!in_array($user->role, $roles)) {
+        if (!in_array($user->role, $role)) {
             abort(403, 'Unauthorized');
         }
 

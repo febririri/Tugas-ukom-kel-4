@@ -82,6 +82,11 @@
       color: #64748b;
       font-size: 14px;
     }
+
+    .topbar img {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
   </style>
 </head>
 <body>
@@ -95,27 +100,39 @@
     <a href="{{ route('sanksi.pelanggaran') }}" class="nav-link">Sanksi Pelanggaran</a>
     <a href="{{ route('penghargaan') }}" class="nav-link">Penghargaan</a>
     <a href="{{ route('history.pelanggaran') }}" class="nav-link">History</a>
+    <a href="#" class="nav-link text-danger"
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Logout
+</a>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
   </div>
 
   <div class="main-content">
 
     <!-- Topbar -->
-   <div class="topbar d-flex justify-content-between align-items-center">
+  <div class="topbar d-flex justify-content-between align-items-center">
 
-  <h5 class="mb-0">Dashboard Guru</h5>
+    <h5 class="mb-0">Dashboard Guru</h5>
 
-  <h2>Halo, {{ $guru->nama }}</h2>
+    <div class="d-flex align-items-center gap-3">
 
-@if($guru->foto)
-    <img src="{{ asset('foto_guru/'.$guru->foto) }}" width="120">
-@endif
+        <!-- Profil Guru -->
+        <div class="text-end">
+            <div class="fw-semibold">{{ $guru->nama }}</div>
+            <div class="text-muted" style="font-size: 13px;">{{ $user->email }}</div>
+        </div>
 
-<p>Email: {{ $guru->email }}</p>
-<p>Role: {{ $guru->role }}</p>
-
+        <!-- Foto Profil -->
+        <img src="{{ asset('foto_guru/' . ($guru->foto ?? 'profile.png')) }}"
+             width="45" height="45"
+             style="object-fit: cover;"
+             class="rounded-circle border">
+    </div>
 
 </div>
-
 
     <div class="row g-3 mb-4">
       <div class="col-md-3">

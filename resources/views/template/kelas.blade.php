@@ -28,7 +28,9 @@
             + Tambah Kelas
         </button>
     </div>
-    
+    <a href="{{ route('dashboard.admin') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
 
     <!-- TABEL -->
     <div class="card p-3">

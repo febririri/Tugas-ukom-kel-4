@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru - SistemPoin</title>
+    <title>Dashboard Admin - SistemPoin</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -107,6 +107,11 @@
             color: #2563eb;
             font-weight: 600;
         }
+
+        .topbar img {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
     </style>
 </head>
 
@@ -128,31 +133,54 @@
 
         <!-- 🔥 submenu tetap, hanya kasih display:none -->
         <ul class="submenu list-unstyled ms-3">
-            <li><a href="kategori_pelanggaran" class="nav-link">Kategori Pelanggaran</a></li>
-            <li><a href="bentuk_pelanggaran" class="nav-link">Bentuk Pelanggaran</a></li>
-            <li><a href="sanksi_pelanggaran" class="nav-link">Sanksi Pelanggaran</a></li>
+            <li><a href="{{ route('kategori.pelanggaran') }}" class="nav-link">Kategori Pelanggaran</a></li>
+            <li><a href="#" class="nav-link">Bentuk Pelanggaran</a></li>
+            <li><a href="{{ route('sanksi.pelanggaran') }}" class="nav-link">Sanksi Pelanggaran</a></li>
         </ul>
     </li>
 
     <a href="#" class="nav-link">Pelanggaran Siswa</a>
     <a href="{{ route('penghargaan') }}" class="nav-link active">Penghargaan</a>
-    <a href="kelas" class="nav-link">Kelas</a>
+    <a href="{{ route('kelas.index') }}"class="nav-link">Kelas</a>
     <a href="siswa" class="nav-link">Siswa</a>
     <a href="guru" class="nav-link">Guru</a>
-    
+  <a href="#" class="nav-link text-danger"
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Logout
+</a>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
+
+
 
 </div>
 
 
 <div class="main-content">
 
-    <div class="topbar d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Dashboard Admin</h5>
- <p>Selamat datang, {{ Auth::user()->name }}</p>
-        <div class="search-box">
-            <input type="text" class="form-control" placeholder="Cari Siswa...">
+  <div class="topbar d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Dashboard Admin</h5>
+
+    <div class="d-flex align-items-center">
+           <!-- Nama & Email -->
+        <div class="text-start">
+            <div class="fw-semibold" style="line-height: 1;">{{ Auth::user()->name }}</div>
+            <div class="text-muted" style="font-size: 13px; line-height: 1;">
+                {{ Auth::user()->email }}
+            </div>
         </div>
+    <!-- Foto Admin -->
+        <img src="{{ asset('foto_admin/' . (Auth::user()->foto ?? 'profileadmin.png')) }}"
+             width="45" height="45"
+             style="object-fit: cover;"
+             class="rounded-circle border me-2">
+
+    
     </div>
+</div>
+
 
     <!-- konten asli kamu tetap -->
     <div class="row g-3 mb-4">

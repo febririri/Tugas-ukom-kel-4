@@ -8,6 +8,7 @@ use App\Models\KategoriPelanggaran as Kategori;
 
 class KategoriController extends Controller
 {
+    
 
     public function edit($id)
 {

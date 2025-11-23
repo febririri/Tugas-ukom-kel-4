@@ -55,7 +55,8 @@
     </div>
 
     <div class="d-flex justify-content-between">
-        <a href="{{ url('/siswa') }}" class="btn btn-secondary px-4">Kembali</a>
+   <a href="{{ route('kelas.siswa', $kelas->id) }}" class="btn btn-secondary mb-3">Kembali</a>
+
         <button type="submit" class="btn btn-primary px-4">Simpan</button>
     </div>
 </form>

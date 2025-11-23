@@ -27,31 +27,42 @@
 
     <div class="card card-form p-4">
 <form action="{{ route('guru.store') }}" method="POST">
-    @csrf
+@csrf
+
+<div class="mb-3">
+    <label>Nama Guru</label>
+    <input type="text" name="nama" class="form-control" required>
+</div>
+
+<div class="mb-3">
+    <label>NIP</label>
+    <input type="text" name="nip" class="form-control">
+</div>
+
+<div class="mb-3">
+    <label>Email Guru</label>
+    <input type="email" name="email" class="form-control" required>
+</div>
+
+<div class="mb-3">
+    <label>Password Guru</label>
+    <input type="password" name="password" class="form-control" required>
+</div>
 
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Nama Guru</label>
-                <input type="text" name="nama" class="form-control" required>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">NIP</label>
-                <input type="number" name="nip" class="form-control" required>
-            </div>
 
-       
-            <div class="d-flex justify-content-between">
-                <a href="{{ url('/guru') }}" class="btn btn-secondary px-4">
-                    Kembali
-                </a>
+    <div class="d-flex justify-content-between">
+        <a href="{{ url('/guru') }}" class="btn btn-secondary px-4">
+            Kembali
+        </a>
 
-                <button type="submit" class="btn btn-primary px-4">
-                    Simpan
-                </button>
-            </div>
+        <button type="submit" class="btn btn-primary px-4">
+            Simpan
+        </button>
+    </div>
+</form>
 
-        </form>
     </div>
 </div>
 

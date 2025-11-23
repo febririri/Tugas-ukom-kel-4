@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function admin()
     {
-        return view('dashboard.admin');
+        return view('template.dashboard_admin');
     }
 
     public function guru()

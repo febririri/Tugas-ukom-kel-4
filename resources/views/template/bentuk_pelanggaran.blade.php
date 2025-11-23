@@ -31,6 +31,10 @@
             + Tambah Bentuk Pelanggaran
         </a>
     </div>
+    <a href="{{ route('kategori.pelanggaran') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
+
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

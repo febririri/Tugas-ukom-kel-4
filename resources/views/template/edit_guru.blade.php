@@ -47,8 +47,32 @@
                         >
                     </div>
 
+                    <!-- EMAIL -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ $guru->email }}"
+                            class="form-control"
+                            required
+                        >
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="text"
+                            name="password"
+                            value="{{ $guru->password }}"
+                            class="form-control"
+                        >
+                        <small class="text-muted">Kosongkan jika tidak ingin mengganti password</small>
+                    </div>
+
                     <div class="d-flex justify-content-between">
-                        <a href="{{ url('/guru') }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('guru.index') }}" class="btn btn-secondary">Kembali</a>
                         <button class="btn btn-primary">Update</button>
                     </div>
 

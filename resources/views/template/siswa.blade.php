@@ -30,7 +30,9 @@
     + Tambah Siswa
 </a>
     </div>
-
+<a href="{{ route('kelas.index') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
     <div class="card card-box p-4">
         <table class="table table-striped table-bordered">
             <thead class="table-primary">

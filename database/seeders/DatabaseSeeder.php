@@ -13,10 +13,14 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-  public function run(): void
+ public function run(): void
 {
-    $this->call(GuruSeeder::class);
+    $this->call([
+        AdminSeeder::class,
+        GuruSeeder::class,  // biarkan seperti ini kalau butuh
+    ]);
 }
+
 
 
 

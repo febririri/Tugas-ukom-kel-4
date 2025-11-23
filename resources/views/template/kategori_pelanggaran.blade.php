@@ -25,8 +25,11 @@
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahKategori">
             + Tambah Jenis Pelanggaran
         </button>
-        
     </div>
+    <a href="{{ route('dashboard.admin') }}" class="btn btn-secondary mb-3">
+    ← Kembali
+</a>
+
 
     <!-- Notifikasi -->
     @if(session('success'))
@@ -53,7 +56,7 @@
 <td>
     {{ $row->bentuk_count }} 
 </td>
-    
+     
     
     <td>
          <div class="d-flex gap-2">
@@ -70,7 +73,9 @@
    onclick="return confirm('Yakin ingin menghapus?')">
    Hapus
 </a>
+
  </div>
+ 
     </td>
 </tr>
 @endforeach
