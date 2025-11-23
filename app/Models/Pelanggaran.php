@@ -6,16 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pelanggaran extends Model
 {
-     protected $table = 'pelanggaran'; 
+    protected $table = 'pelanggaran';
 
     protected $fillable = [
-        'nama_siswa',
+        'siswa_id',
         'kelas',
-        'jurusan',
-        'jenis_pelanggaran',
         'bentuk_pelanggaran',
-        'poin',
         'keterangan',
         'bukti',
+        // field lain sesuai kebutuhan
     ];
+
+    // Relasi ke model Siswa
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
 }
