@@ -103,7 +103,7 @@
     <a href="{{ route('dashboard.guru') }}" class="nav-link active">Dashboard</a>
     <a href="{{ route('input.pelanggaran') }}" class="nav-link">Input Pelanggaran</a>
     <a href="{{ route('sanksi.pelanggaran') }}" class="nav-link">Sanksi Pelanggaran</a>
-    <a href="{{ route('penghargaan') }}" class="nav-link">Penghargaan</a>
+    <a href="{{ route('penghargaan.index') }}" class="nav-link">Penghargaan</a>
     <a href="{{ route('history.pelanggaran') }}" class="nav-link">History</a>
   </div>
 

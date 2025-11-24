@@ -6,30 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('siswa', function (Blueprint $table) {
-          $table->id();
-            $table->BigInteger('guru_id',false,true)->index('guruid'); 
-            $table->string('nis', 50)->nullable(false);
-            $table->string('nama', 150)->nullable(false);
-            $table->string('kelas', 50)->nullable(false);
-        $table->string('foto')->nullable();
+    public function up()
+{
+    Schema::create('siswa', function (Blueprint $table) {
+        $table->id();
+        $table->string('nis')->unique();
+        $table->string('nama');
+        $table->string('kelas');
+        $table->enum('jenis_kelamin', ['L', 'P']);
+      
+        $table->timestamps();
+    });
+}
 
-
-          
-            $table->timestamps();
-
-             $table->foreign('guru_id')->references('id')->on('guru')->onDelete('cascade');
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('siswa');

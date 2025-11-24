@@ -14,11 +14,11 @@ class Pelanggaran extends Model
         'bentuk_pelanggaran',
         'keterangan',
         'bukti',
-        // field lain sesuai kebutuhan
     ];
 
-    // Relasi ke model Siswa
+    // Relasi ke tabel siswa
     public function siswa()
+    
     {
         return $this->belongsTo(Siswa::class, 'siswa_id');
     }
